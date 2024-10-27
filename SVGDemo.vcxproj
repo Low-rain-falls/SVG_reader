@@ -148,12 +148,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Circle.h" />
-    <ClInclude Include="Eclipse.h" />
+    <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="rapidxml.hpp" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SVGDemo.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

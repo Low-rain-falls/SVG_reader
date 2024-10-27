@@ -30,10 +30,19 @@
     <ClInclude Include="rapidxml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Eclipse.h">
+    <ClInclude Include="Ellipse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

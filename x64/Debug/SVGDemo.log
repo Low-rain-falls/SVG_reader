@@ -1,5 +1,47 @@
 ﻿  SVGDemo.cpp
-H:\CC++\SVGDemo\SVGDemo\SVGDemo.cpp(103,14): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(38,21): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-  SVGDemo.vcxproj -> H:\CC++\SVGDemo\x64\Debug\SVGDemo.exe
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(55,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(56,46): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(38,37): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(44,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(40,32): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(42,32): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(42,23): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(39,58): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(40,55): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(46,52): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(47,53): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(48,53): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(49,53): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(127,14): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+  SVGDemo.vcxproj -> C:\Users\namha\Documents\SVGDemo\x64\Debug\SVGDemo.exe
