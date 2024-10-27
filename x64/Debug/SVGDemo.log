@@ -1,0 +1,5 @@
+﻿  SVGDemo.cpp
+H:\CC++\SVGDemo\SVGDemo\SVGDemo.cpp(103,14): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+  SVGDemo.vcxproj -> H:\CC++\SVGDemo\x64\Debug\SVGDemo.exe
