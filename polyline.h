@@ -37,8 +37,8 @@ class myPolyline{
                 this->points[i] = points[i];
         }
         void draw(Graphics& graphic) const{
-            Pen      pen(Color(int(stroke_opacity * 255), stroke[0], stroke[1], stroke[2]), stroke_width);
-            SolidBrush      brush(Color(int(fill_opacity * 255), fill[0], fill[1], fill[2]));
+            Pen      pen(Color((BYTE)(stroke_opacity * 255), stroke[0], stroke[1], stroke[2]), stroke_width);
+            SolidBrush      brush(Color((BYTE)(fill_opacity * 255), fill[0], fill[1], fill[2]));
             graphic.FillPolygon(&brush, points, size);
             graphic.DrawLines(&pen, points, size);
         }
