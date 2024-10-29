@@ -1,51 +1,62 @@
-#ifndef POLYGON_H
-#define POLYGON_H
+#pragma once
 
-#include <vector>
+#include "stdafx.h"
 #include <gdiplus.h>
-#include <fstream>
+#include <objidl.h>
+
 using namespace Gdiplus;
 
-class myPolygon {
-    private:
-        int stroke[3];
-        float stroke_width;
-        float stroke_opacity;
-        int fill[3];
-        float fill_opacity;
-        Point* points;
-        int size;
-    public:
-        myPolygon() {
-            stroke[0] = stroke[1] = stroke[2] = 0;
-            fill[0] = fill[1] = fill[2] = 0;
-            size = 0;
-            stroke_width = stroke_opacity = fill_opacity = 0.0;
-            points = NULL;
-        }
-        myPolygon(int stroke[3], float stroke_width, float stroke_opacity, int fill[3], float fill_opacity, Point* points, int size) {
-            for (int i = 0; i < 3; i++) {
-                this->stroke[i] = stroke[i];
-                this->fill[i] = fill[i];
-            }
-            this->stroke_width = stroke_width;
-            this->stroke_opacity = stroke_opacity;
-            this->fill_opacity = fill_opacity;
-            this->size = size;
-            this->points = new Point[size];
-            for (int i = 0; i < size; i++)
-                this->points[i] = points[i];
-        }
-        void draw(Graphics& graphic) const{
-            Pen      pen(Color((BYTE)(stroke_opacity * 255), stroke[0], stroke[1], stroke[2]), stroke_width);
-            SolidBrush      brush(Color((BYTE)(fill_opacity * 255), fill[0], fill[1], fill[2]));
-            graphic.FillPolygon(&brush, points, size);
-            graphic.DrawPolygon(&pen, points, size);
-        }
-        ~myPolygon() {
-            delete[] points;
-            points = NULL;
-        }
+//<polygon fill = "rgb(153, 204, 255)" fill - opacity = "0.5" stroke - width = "10" stroke = "rgb(255, 0, 102)" stroke - opacity = "0.7" points = "850,75 958,137 958,262 850,325 742,262 742,137" / >
+//<polygon fill = "rgb(255, 255, 0)" fill - opacity = "0.6" stroke - width = "10" stroke = "rgb(255, 0, 0)" stroke - opacity = "0.7" points = "350,75 379,161 469,161 397,215 423,301 350,250 277,301 303,215 231,161 321,161" / >
+
+class myPolygon
+{
+private:
+	Color fill;
+	float fillOpacity;
+	int strokeWidth;
+	Color stroke;
+	float strokeOpacity;
+	int* points;
+	int numPoints;
+public:
+	myPolygon(int* points, int numPoints, Color stroke, int strokeWidth, float strokeOpacity, Color fill, float fillOpacity);
+	~myPolygon();
+	void Draw(Graphics graphics);
+
+
 };
 
-#endif
+myPolygon::myPolygon(int* points, int numPoints, Color stroke, int strokeWidth, float strokeOpacity, Color fill, float fillOpacity)
+{
+	this->fill = fill;
+	this->fillOpacity = fillOpacity;
+	this->strokeWidth = strokeWidth;
+	this->stroke = stroke;
+	this->strokeOpacity = strokeOpacity;
+	this->numPoints = numPoints;
+	this->points = new int[numPoints];
+	for (int i = 0; i < numPoints; i++)
+	{
+		this->points[i] = points[i];
+	}
+}
+
+void myPolygon::Draw(Graphics graphics)
+{
+	Pen strokeDraw(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()), this->strokeWidth);
+	SolidBrush fillDraw(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+	Point* pointArray = new Point[this->numPoints / 2];
+	for (int i = 0; i < this->numPoints; i += 2)
+	{
+		pointArray[i / 2].X = this->points[i];
+		pointArray[i / 2].Y = this->points[i + 1];
+	}
+	graphics.FillPolygon(&fillDraw, pointArray, this->numPoints / 2);
+	graphics.DrawPolygon(&strokeDraw, pointArray, this->numPoints / 2);
+}
+
+myPolygon::~myPolygon()
+{
+	delete[] points;
+}
