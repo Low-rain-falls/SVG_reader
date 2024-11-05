@@ -1,53 +1,30 @@
-#ifndef POLYGON_H
-#define POLYGON_H
+#pragma once
 
-#include <vector>
+#include "stdafx.h"
 #include <gdiplus.h>
-#include <fstream>
+#include <objidl.h>
+#include "SVGElement.h"
 using namespace Gdiplus;
 
-class myPolygon {
-    private:
-        int stroke[3];
-        float stroke_width;
-        float stroke_opacity;
-        int fill[3];
-        float fill_opacity;
-        Point* points;
-        int size;
-    public:
-        myPolygon() {
-            stroke[0] = stroke[1] = stroke[2] = 0;
-            fill[0] = fill[1] = fill[2] = 0;
-            size = 0;
-            stroke_width = stroke_opacity = fill_opacity = 0.0;
-            points = NULL;
-        }
-        myPolygon(int stroke[3], float stroke_width, float stroke_opacity, int fill[3], float fill_opacity, Point* points, int size) {
-            for (int i = 0; i < 3; i++) {
-                this->stroke[i] = stroke[i];
-                this->fill[i] = fill[i];
-            }
-            this->stroke_width = stroke_width;
-            this->stroke_opacity = stroke_opacity;
-            this->fill_opacity = fill_opacity;
-            this->size = size;
-            this->points = new Point[size];
-            for (int i = 0; i < size; i++)
-                this->points[i] = points[i];
-        }
-        void draw(Graphics& graphic) {
-            Pen      pen(Color(int(stroke_opacity * 255), stroke[0], stroke[1], stroke[2]), stroke_width);
-            SolidBrush      brush(Color(int(fill_opacity * 255), fill[0], fill[1], fill[2]));
-            GraphicsPath path;
-            path.AddPolygon(points, size);
-            graphic.FillPath(&brush, &path);
-            graphic.DrawPath(&pen, &path);
-        }
-        ~myPolygon() {
-            delete[] points;
-            points = NULL;
-        }
-};
+//<polygon fill = "rgb(153, 204, 255)" fill - opacity = "0.5" stroke - width = "10" stroke = "rgb(255, 0, 102)" stroke - opacity = "0.7" points = "850,75 958,137 958,262 850,325 742,262 742,137" / >
+//<polygon fill = "rgb(255, 255, 0)" fill - opacity = "0.6" stroke - width = "10" stroke = "rgb(255, 0, 0)" stroke - opacity = "0.7" points = "350,75 379,161 469,161 397,215 423,301 350,250 277,301 303,215 231,161 321,161" / >
 
-#endif
+class my_polygon : public SVGElement
+{
+public:
+	my_polygon(int* points = nullptr, int num_points = 0, Color stroke = Color(0, 0, 0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 1) : SVGElement(points, num_points, stroke, stroke_width, stroke_opacity, fill, fill_opacity) {}
+	void render(Graphics graphics) override
+	{
+		Pen pen(Color(this->stroke_opacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()), this->stroke_width);
+		SolidBrush brush(Color(this->fill_opacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+		Point* point_array = new Point[this->num_points / 2];
+		for (int i = 0; i < this->num_points; i += 2)
+		{
+			point_array[i / 2].X = this->points[i];
+			point_array[i / 2].Y = this->points[i + 1];
+		}
+		graphics.FillPolygon(&brush, point_array, this->num_points / 2);
+		graphics.DrawPolygon(&pen, point_array, this->num_points / 2);
+		delete[] point_array;
+	}
+};

@@ -1,53 +1,30 @@
 #pragma once
 
+#include "SVGElement.h"
 #include "stdafx.h"
 #include <gdiplus.h>
 #include <objidl.h>
 
 using namespace Gdiplus;
 
-//  <circle cx="200" cy="300" r="100" fill="rgb(255, 255, 0)" stroke="rgb(0,
-//  255, 255)" stroke-width="10" stroke-opacity="0.7" fill-opacity="0.5" />
-class Circle {
-private:
-  int cx, cy, r;
-  Color fill;
-  Color stroke;
-  double stroke_width, stroke_opacity, fill_opacity;
-
+class my_circle : public SVGElement {
 public:
-  Circle(int cx, int cy, int r, Color fill, Color stroke, double stroke_width,
-         double stroke_opacity, double fill_opacity);
-  void draw(Graphics graphic);
+  my_circle(int cx = 0, int cy = 0, int r = 1, Color stroke = Color(0, 0, 0),
+            double stroke_width = 1, double stroke_opacity = 1,
+            Color fill = Color(0, 0, 0), double fill_opacity = 1)
+      : SVGElement(cx, cy, r, r, stroke, stroke_width, stroke_opacity, fill,
+                   fill_opacity) {}
+
+  void render(Graphics graphic) override {
+    Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(),
+                      this->stroke.GetG(), this->stroke.GetB());
+    Color fillColor(255 * this->fill_opacity, this->fill.GetR(),
+                    this->fill.GetG(), this->fill.GetB());
+    Pen pen(strokeColor, this->stroke_width);
+    SolidBrush brush(fillColor);
+    graphic.FillEllipse(&brush, this->x1 - this->width, this->y1 - this->width,
+                        this->width * 2, this->width * 2);
+    graphic.DrawEllipse(&pen, this->x1 - this->width, this->y1 - this->width,
+                        this->width * 2, this->width * 2);
+  }
 };
-
-Circle::Circle(int cx, int cy, int r, Color fill, Color stroke,
-               double stroke_width, double stroke_opacity,
-               double fill_opacity) {
-  this->cx = cx;
-  this->cy = cy;
-  this->r = r;
-  this->fill = fill;
-  this->stroke = stroke;
-  this->stroke_width = stroke_width;
-  this->stroke_opacity = stroke_opacity;
-  this->fill_opacity = fill_opacity;
-}
-
-void Circle::draw(Graphics graphic) {
-  BYTE strokeAlpha = static_cast<BYTE>(255 * this->stroke_opacity);
-  BYTE fillAlpha = static_cast<BYTE>(255 * this->fill_opacity);
-
-  Color strokeColor(strokeAlpha, this->stroke.GetR(), this->stroke.GetG(),
-                    this->stroke.GetB());
-  Color fillColor(fillAlpha, this->fill.GetR(), this->fill.GetG(),
-                  this->fill.GetB());
-
-  Pen pen(strokeColor, static_cast<REAL>(this->stroke_width));
-  SolidBrush brush(fillColor);
-
-  graphic.FillEllipse(&brush, this->cx - this->r, this->cy - this->r,
-                      this->r * 2, this->r * 2);
-  graphic.DrawEllipse(&pen, this->cx - this->r, this->cy - this->r, this->r * 2,
-                      this->r * 2);
-}

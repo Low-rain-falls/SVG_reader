@@ -1,47 +1,82 @@
 ﻿  SVGDemo.cpp
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(38,21): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(1,9): warning C4603: '_CRT_SECURE_NO_WARNINGS': macro is not defined or definition is different after precompiled header use
+  (compiling source file '/SVGDemo.cpp')
+      C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(1,9):
+      Add macro to precompiled header instead of defining here
+      C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(3,1):
+      use of precompiled header
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Circle.h(17,25): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(55,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Circle.h(18,23): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(56,46): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Circle.h(19,28): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(38,37): warning C4244: 'argument': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Ellipse.h(16,26): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(44,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Ellipse.h(17,24): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(40,32): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Ellipse.h(19,29): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(42,32): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(25,26): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(42,23): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Line.h(26,29): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(39,58): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polygon.h(18,38): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(40,55): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polygon.h(18,113): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(46,52): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polygon.h(19,45): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(47,53): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polyline.h(19,26): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(48,53): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polyline.h(20,29): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(49,53): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Polyline.h(21,45): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
-C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(127,14): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(15,26): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file '/SVGDemo.cpp')
   
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(16,29): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Rect.h(17,44): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(23,30): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(25,31): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\Text.h(25,21): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(38,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(42,20): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(50,23): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(300,14): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  (compiling source file '/SVGDemo.cpp')
+  
+C:\Users\namha\Documents\SVGDemo\SVGDemo\SVGDemo.cpp(186,1): warning C4715: 'parseSVG': not all control paths return a value
   SVGDemo.vcxproj -> C:\Users\namha\Documents\SVGDemo\x64\Debug\SVGDemo.exe

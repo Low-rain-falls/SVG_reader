@@ -3,66 +3,19 @@
 #include "stdafx.h"
 #include <gdiplus.h>
 #include <objidl.h>
-
+#include "SVGElement.h"
 using namespace Gdiplus;
 
-// <rect fill-opacity="0.01" stroke="rgb(200,200,200)" stroke-width="2" x="25"
-// y="25" width="800" height="400" />
-
-class myRect {
-private:
-  int x;
-  int y;
-  int width;
-  int height;
-  Color stroke;
-  int strokeWidth;
-  float fillOpacity;
-  Color fill;
-
+class my_rect : public SVGElement
+{
 public:
-  myRect(int x, int y, int width, int height, Color stroke, int strokeWidth,
-         float fillOpacity);
-  myRect(int x, int y, int width, int height, Color stroke, int strokeWidth,
-         float fillOpacity, Color fill);
-  ~myRect();
-  void Draw(Graphics graphics);
+	my_rect(int x = 0, int y = 0, int width = 1, int height = 1, Color stroke = Color(0,0,0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 1) : SVGElement(x, y, width, height, stroke, stroke_width, stroke_opacity, fill, fill_opacity) {}
+	void render(Graphics graphics) override
+	{
+		Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
+		Pen pen(stroke_color, this->stroke_width);
+		SolidBrush brush(Color(this->fill_opacity* 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+		graphics.FillRectangle(&brush, this->x1, this->y1, this->width, this->height);
+		graphics.DrawRectangle(&pen, this->x1, this->y1, this->width, this->height);
+	}
 };
-
-myRect::myRect(int x, int y, int width, int height, Color stroke,
-               int strokeWidth, float fillOpacity) {
-  this->x = x;
-  this->y = y;
-  this->width = width;
-  this->height = height;
-  this->stroke =
-      stroke; // Fix the error by initializing the Pen object correctly
-  this->strokeWidth = strokeWidth;
-  this->fillOpacity = fillOpacity;
-  this->fill = Color(fillOpacity, 0, 0, 0);
-}
-
-myRect::myRect(int x, int y, int width, int height, Color stroke,
-               int strokeWidth, float fillOpacity, Color fill) {
-  this->x = x;
-  this->y = y;
-  this->width = width;
-  this->height = height;
-  this->stroke =
-      stroke; // Fix the error by initializing the Pen object correctly
-  this->strokeWidth = strokeWidth;
-  this->fillOpacity = fillOpacity;
-  this->fill = fill;
-}
-
-void myRect::Draw(Graphics graphics) {
-  Pen strokeDraw(this->stroke, this->strokeWidth);
-  SolidBrush fillDraw(Color(this->fillOpacity * 255, this->fill.GetR(),
-                            this->fill.GetG(), this->fill.GetB()));
-  graphics.FillRectangle(&fillDraw, this->x, this->y, this->width,
-                         this->height);
-  graphics.DrawRectangle(&strokeDraw, this->x, this->y, this->width,
-                         this->height);
-}
-
-myRect::~myRect() {}
