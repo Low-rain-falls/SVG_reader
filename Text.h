@@ -1,29 +1,46 @@
-#pragma once
+#ifndef MY_TEXT_H
+#define MY_TEXT_H
 
-#include "stdafx.h"
-#include <gdiplus.h>
-#include <iostream>
-#include <objidl.h>
 #include "SVGElement.h"
-
-using namespace std;
+#include <GdiPlus.h>
 using namespace Gdiplus;
-
-// <text x="0" y="0" fill="rgb(0,0,255)" font-size="40">SVG Demo</text>
-// <text x="400" y="400" fill="rgb(255,0,255)" font-size="30">Nguyen Van A</text>
 
 class my_text : public SVGElement
 {
-public:
-	my_text(int x, int y, Color stroke, int font_size, string value) : SVGElement(x, y, stroke, font_size, value) {}
+private:
+	int x, y;
+	Color stroke;
+	Color fill;
+	int font_size;
+	string content;
+	double stroke_width;
 
-	void render(Graphics graphics) override
+public:
+	my_text(int x, int y, Color fill, Color stroke, double stroke_width, int font_size, string content) : x(x), y(y), stroke(stroke), font_size(font_size), content(content), fill(fill), stroke_width(stroke_width) {}
+
+	void setTransform(const string& content) override {
+		this->t.parseTransform(content);
+	}
+
+	void render(Graphics& graphics) override
 	{
-		FontFamily fontFamily(L"Arial");
-		Font font(&fontFamily, this->fontSize, FontStyleRegular, UnitPixel);
-		SolidBrush fillDraw(this->stroke);
-		PointF pointF(this->x1, this->y1);
-		std::wstring wtext(this->text.begin(), this->text.end());
-		graphics.DrawString(wtext.c_str(), -1, &font, pointF, &fillDraw);
+		this->t.applyTransform(graphics);
+		FontFamily fontFamily(L"Consolas");
+		Font font(&fontFamily, static_cast<REAL>(font_size), FontStyleRegular, UnitPixel);
+		SolidBrush brush(fill);
+		PointF pointF(static_cast<REAL>(x), static_cast<REAL>(y));
+		graphics.DrawString(std::wstring(content.begin(), content.end()).c_str(), -1, &font, pointF, &brush);
+		Pen pen(stroke, stroke_width);
+		GraphicsPath path;
+		StringFormat format;
+		path.AddString(std::wstring(content.begin(), content.end()).c_str(), -1, &fontFamily, FontStyleRegular, static_cast<REAL>(font_size), pointF, &format);
+		graphics.DrawPath(&pen, &path);
+		this->t.resetTransform(graphics);
+	}
+
+	~my_text() override {
+
 	}
 };
+
+#endif
