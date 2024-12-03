@@ -1,0 +1,7 @@
+<!--<svg xmlns="http://www.w3.org/2000/svg">
+	<text x="5" y="30" fill="rgb(255, 0, 0)" font-size="35" transform="scale(3, 3)" >I Love  </text>
+  <text x="35" y="60"  font-size="35" fill="rgb(255, 255, 255)" stroke="rgb(0, 255, 0)" transform="scale(3, 3)">SVG</text>
+</svg>-->
+<svg xmlns="http://www.w3.org/2000/svg">
+	<path d="M150,5 L75,200 L225,200 Z" fill="" stroke="rgb(0, 255, 0)" stroke-width="3" />
+</svg>

@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Group.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="polygon.h" />
@@ -145,7 +146,11 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="betrayed.svg" />
+    <None Include="chart.svg" />
+    <None Include="kali.svg" />
     <None Include="sample.svg" />
+    <None Include="transform.svg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

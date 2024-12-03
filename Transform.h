@@ -31,7 +31,7 @@ void Transform::applyTransform(Graphics& g) {
         matrix.Translate(translateX, translateY);
     }
     if (rotateAngle != 0) {
-        matrix.RotateAt(rotateAngle, PointF(rotateCenterX, rotateCenterY));
+        matrix.Rotate(rotateAngle);
     }
     if (scaleX != 1 || scaleY != 1) {
         matrix.Scale(scaleX, scaleY);
@@ -65,11 +65,11 @@ void Transform::parseTransform(const string& content) {
         }
 
         if (type == "translate") {
-            translateX = values[0];
-            if (values.size() > 1) translateY = values[1];
+            translateX += values[0];
+            if (values.size() > 1) translateY += values[1];
         }
         else if (type == "rotate") {
-            rotateAngle = values[0];
+            rotateAngle += values[0];
             if (values.size() > 2) {
                 rotateCenterX = values[1];
                 rotateCenterY = values[2];
