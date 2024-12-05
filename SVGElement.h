@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "gdiplus.h"
 #include "objidl.h"
-#include "Transform.h"
 #include <iostream>
 #include <vector>
 
@@ -13,12 +12,16 @@ using namespace Gdiplus;
 
 class SVGElement
 {
-	public:
-		Transform t;
-		vector<SVGElement*> getG();
-		virtual void setTransform(const string& content) = 0;
-		virtual void render(Graphics& graphic) = 0;
-		virtual ~SVGElement() = default;
+private:
+	string name;
+public:
+	string getName() {
+		return this->name;
+	}
+	SVGElement(const string& name) : name(name) {}
+	virtual void render(Graphics& graphic) = 0;
+	virtual ~SVGElement() = default;
+	virtual string getTransform() = 0;
 };
 
 #endif

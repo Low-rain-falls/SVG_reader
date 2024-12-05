@@ -2,30 +2,33 @@
 #define SVGRENDERER_H
 
 #include "SVGElement.h"
+#include "Transform.h"
 
 class SVGRenderer {
+private:
+	Transform transform;
 public:
-	vector<SVGElement*> elements;
-
-	void addElement(SVGElement* element);
-	void render(Graphics& graphic);
-	~SVGRenderer();
+	void render(Graphics& graphic, vector<SVGElement*>);
+	void renderTransform(Graphics& graphic, string transform);
 };
 
-void SVGRenderer::addElement(SVGElement* element) {
-	this->elements.push_back(element);
-}
-
-void SVGRenderer::render(Graphics& graphic) {
-	for (SVGElement* element : this->elements) {
-		element->render(graphic);
+void SVGRenderer::render(Graphics& graphic, vector<SVGElement*> element) {
+	for (auto i : element) {
+		string transform = i->getTransform();
+		if (transform != "") {
+			this->transform.parseTransform(transform);
+			this->transform.applyTransform(graphic);
+			i->render(graphic);
+			this->transform.resetTransform(graphic);
+			continue;
+		}
+		i->render(graphic);
 	}
 }
 
-SVGRenderer::~SVGRenderer() {
-	for (SVGElement* element : this->elements) {
-		delete element;
-	}
+void SVGRenderer::renderTransform(Graphics& graphic, string transform) {
+	this->transform.parseTransform(transform);
+	this->transform.applyTransform(graphic);
 }
 
-#endif 
+#endif

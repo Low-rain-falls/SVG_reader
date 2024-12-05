@@ -134,23 +134,23 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="polyline.h" />
-    <ClInclude Include="rapidxml.hpp" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="SVGDemo.h" />
     <ClInclude Include="SVGElement.h" />
     <ClInclude Include="SVGRenderer.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="betrayed.svg" />
-    <None Include="chart.svg" />
-    <None Include="kali.svg" />
     <None Include="sample.svg" />
-    <None Include="transform.svg" />
+    <None Include="svg-02.svg" />
+    <None Include="svg-03.svg" />
+    <None Include="svg-04.svg" />
+    <None Include="svg-05.svg" />
+    <None Include="svg-07.svg" />
+    <None Include="svg-08.svg" />
+    <None Include="svg-09.svg" />
+    <None Include="svg-10.svg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

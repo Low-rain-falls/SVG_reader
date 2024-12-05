@@ -4,30 +4,6 @@
 
 #include "SVGElement.h"
 
-//class my_g : public SVGElement
-//{
-//private:
-//public:
-//	vector<SVGElement*> e;
-//	my_g() {}
-//	void setTransform(const string& content) override {
-//		this->t.parseTransform(content);
-//	}
-//
-//	void render(Graphics& graphics) override
-//	{
-//		this->t.applyTransform(graphics);
-//		for (int i = 0; i < e.size(); i++)
-//		{
-//			e[i]->render(graphics);
-//		}
-//		this->t.resetTransform(graphics);
-//	}
-//	~my_g() override {
-//
-//	}
-//};
-
 void applyTransform(Graphics& graphics, string transform) {
     std::istringstream ss(transform);
     std::string token;
@@ -84,23 +60,28 @@ void applyTransform(Graphics& graphics, string transform) {
 class my_group : public SVGElement {
 private:
 	std::vector<SVGElement*> elements; 
-
+    string transform;
 public:
-	my_group(vector<SVGElement*> elements) : elements(elements) {}
+	my_group(string name, string transform) : elements(elements), SVGElement(name), transform(transform) {}
 
-	void setTransform(const string& transform) override {
-		this->t.parseTransform(transform);
+	void addElement(SVGElement* element) {
+		this->elements.push_back(element);
 	}
 
 	void render(Graphics& graphic) override {
-		
-        this->t.applyTransform(graphic);
-
 		for (auto& element : elements) {
+            if (element->getTransform() != "")
+            {
+				GraphicsState save = graphic.Save();
+                Transform t;
+				t.parseTransform(element->getTransform());
+				t.appleMultipleTransforms(graphic);
+				element->render(graphic);
+				graphic.Restore(save);
+                continue;
+            }
 			element->render(graphic);
 		}
-
-        this->t.resetTransform(graphic);
 	}
 
     ~my_group() override {
@@ -108,6 +89,10 @@ public:
             delete element;
         }
     }
+
+	string getTransform() override {
+		return this->transform;
+	}
 };
 
 #endif
