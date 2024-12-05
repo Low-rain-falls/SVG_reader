@@ -1,75 +1,96 @@
 <!--<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg">
+	<g stroke="rgb(255,0,0)" stroke-width="2" transform="translate(100, 0) rotate(45)">
 
-		
-
+		-->
+<!-- Hình chữ nhật lớn -->
+<!--
 		<rect fill-opacity="0.01" stroke="rgb(200,200,200)" stroke-width="2" x="25" y="25" width="800" height="400"
 			  transform="translate(10, 10)" />
 
-		
-
+		-->
+<!-- Hình chữ nhật nhỏ -->
+<!--
 		<rect fill-opacity="0.2" fill="rgb(200,100,150)" stroke="rgb(55,55,55)" stroke-width="2" x="20" y="20" width="800" height="400"
 			  transform="scale(1.1, 1.1)" />
 
-		
-
+		-->
+<!-- Văn bản tiêu đề -->
+<!--
 		<text x="0" y="0" fill="rgb(0,0,255)" font-size="40" transform="translate(50, 50)">SVG Demo</text>
 
-		
-
+		-->
+<!-- Hình chữ nhật không tô -->
+<!--
 		<rect fill-opacity="0" x="0" y="0" width="200" height="50" stroke="rgb(255,0,0)" stroke-width="2"
 			  transform="rotate(15, 100, 25)" />
 
-
+		-->
+<!-- Văn bản dưới cùng -->
+<!--
 		<text x="400" y="400" fill="rgb(255,0,255)" font-size="30" transform="rotate(-10, 400, 400)">Nguyen Van A</text>
+	</g>
 	
-	
-
+	-->
+<!-- Hình tròn -->
+<!--
 	<circle cx="200" cy="300" r="100" fill="rgb(255, 255, 0)" stroke="rgb(0, 255, 255)" stroke-width="10" stroke-opacity="0.7" fill-opacity="0.5"
 			transform="translate(50, -50) scale(0.8)" />
 
-	
-
+	-->
+<!-- Đường polyline -->
+<!--
 	<polyline stroke="rgb(255, 0, 0)" stroke-width="2" stroke-opacity="0.7" fill="rgb(0, 255, 255)" fill-opacity="0.5"
 			  points="5,37 15,37 15,32 25,32 25,37 35,37 35,25 45,25 45,37 55,37 55,17 65,17 65,37 75,37 75,10 85,10 85,37 95,37 95,2 105,2 105,37 115,37"
 			  transform="translate(10, 10) skewX(15)" />
 
-	
-
+	-->
+<!-- Hình elip -->
+<!--
 	<ellipse cx="500" cy="100" rx="100" ry="50" stroke="rgb(255, 255, 0)" stroke-width="3" fill="rgb(0, 255, 0)" stroke-opacity="0.7" fill-opacity="0.5"
 			 transform="scale(0.9, 1.2)" />
 
-	
-
+	-->
+<!-- Các đường thẳng -->
+<!--
 	<line x1="10" y1="30" x2="30" y2="10" stroke="rgb(0, 0, 255)" stroke-width="5" stroke-opacity="0.7" transform="rotate(10, 20, 20)" />
 	<line x1="30" y1="30" x2="50" y2="10" stroke="rgb(0, 0, 255)" stroke-width="10" stroke-opacity="0.8" transform="rotate(20, 40, 20)" />
 	<line x1="50" y1="30" x2="70" y2="10" stroke="rgb(0, 0, 255)" stroke-width="15" stroke-opacity="0.9" transform="rotate(30, 60, 20)" />
 	<line x1="70" y1="30" x2="90" y2="10" stroke="rgb(0, 0, 255)" stroke-width="20" stroke-opacity="0.9" transform="rotate(40, 80, 20)" />
 	<line x1="90" y1="30" x2="110" y2="10" stroke="rgb(0, 0, 255)" stroke-width="25" stroke-opacity="1.0" transform="rotate(50, 100, 20)" />
 
-
+	-->
+<!-- Hình đa giác 6 cạnh -->
+<!--
 	<polygon fill="rgb(153, 204, 255)" fill-opacity="0.5" stroke-width="10" stroke="rgb(255, 0, 102)" stroke-opacity="0.7"
 			 points="850,75 958,137 958,262 850,325 742,262 742,137"
 			 transform="translate(-50, -50) scale(1.2)" />
 
-	
+	-->
+<!-- Hình đa giác ngôi sao -->
+<!--
 	<polygon fill="rgb(255, 255, 0)" fill-opacity="0.6" stroke-width="10" stroke="rgb(255, 0, 0)" stroke-opacity="0.7"
 			 points="350,75 379,161 469,161 397,215 423,301 350,250 277,301 303,215 231,161 321,161"
 			 transform="rotate(-15, 350, 200)" />
 
-	
-
+	-->
+<!-- Đường polyline cuối cùng -->
+<!--
 	<polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,140" fill-opacity="0.5" transform="translate(20, 20)" />
 	<path fill="rgb(119, 221, 119)" opacity="0.6" stroke="rgb(255,0,0)" stroke-width="5" d="M100,200 C100,100 250,100 250,200 C250,300 400,300 400,200 H900, V90, H1000, V300 L100, 300 Z"/>
 	<path opacity="0.7" d="M2.34594,11.2501 C2.12458,10.5866 2,9.92019 2,9.26044 C2,3.3495 7.50016,0.662637 12,5.49877 C16.4998,0.662637 22,3.34931 22,9.2604 C22,9.92017 21.8754,10.5866 21.6541,11.2501 H18.6361 L18.5241,11.25 C17.9784,11.2491 17.4937,11.2483 17.0527,11.4447 C16.6116,11.6411 16.2879,12.002 15.9233,12.4084 L15.8485,12.4918 L14.8192,13.6354 C14.7164,13.7496 14.5379,13.7463 14.4401,13.6277 L10.8889,9.32318 C10.7493,9.15391 10.6,8.97281 10.454,8.8384 C10.2839,8.68188 10.0325,8.50581 9.68096,8.4847 C9.32945,8.46359 9.05875,8.60829 8.87115,8.74333 C8.71006,8.8593 8.54016,9.02123 8.38136,9.17258 L6.85172,10.6294 C6.37995,11.0787 6.28151,11.1553 6.17854,11.1964 C6.07557,11.2376 5.9515,11.2501 5.3,11.2501 H2.34594 Z" fill="rgb(28,39,76)" transform="scale(5,5)"/>
 	<path d="M21.6538,11.2499 H18.6359 L18.5239,11.2497 C17.9781,11.2489 17.4935,11.2481 17.0524,11.4445 C16.6114,11.6409 16.2876,12.0018 15.9231,12.4082 L15.8482,12.4915 L14.819,13.6352 C14.7162,13.7494 14.5377,13.7461 14.4399,13.6275 L10.8886,9.32297 C10.7491,9.1537 10.5998,8.9726 10.4537,8.83819 C10.2837,8.68166 10.0322,8.5056 9.68072,8.48449 C9.32922,8.46337 9.05852,8.60808 8.87092,8.74312 C8.70983,8.85908 8.53993,9.02101 8.38113,9.17236 L6.85149,10.6292 C6.37972,11.0785 6.28128,11.155 6.17831,11.1962 C6.07534,11.2374 5.95126,11.2499 5.29977,11.2499 H2.3457 C3.38166,14.3548 6.5372,17.3936 8.9615,19.3705 C10.2935,20.4567 10.9595,20.9998 11.9998,20.9998 C13.0401,20.9998 13.7061,20.4567 15.038,19.3705 C17.4623,17.3936 20.6179,14.3548 21.6538,11.2499 Z" fill="rgb(28,39,76)" transform="scale(5,5)"/>
 </svg>-->
 <svg xmlns="http://www.w3.org/2000/svg">
-	<g stroke="rgb(255,0,0)" stroke-width="2" transform="translate(100, 100) rotate(30)">
+	<g stroke="rgb(255,0,0)" stroke-width="2" transform="translate(100, 0) rotate(45)">
 		<line x1="10" y1="10" x2="85" y2="10"/>
 		<rect x="10" y="20" height="50" width="75" fill="rgb(0,255,0)"/>
 		<text x="10" y="110" stroke="rgb(255,255,0)" fill="rgb(0,0,255)" font-size ="55">Text grouped with shapes</text>
-		<g transform="translate(100, 100)">
+		<g transform="translate(200, 100) rotate(45)">
+			<g transform="rotate(6)">
+				<text x="50" y="110" stroke="none" fill="rgb(0,0,255)" font-size="40">Nested Group Text</text>
+				<line x1="50" y1="130" x2="360" y2="130"/>
+			</g>
 			<text x="50" y="110" stroke="none" fill="rgb(0,0,255)" font-size="40">Nested Group Text</text>
 			<line x1="50" y1="130" x2="360" y2="130"/>
 		</g>

@@ -14,17 +14,13 @@ private:
 	int font_size;
 	string content;
 	double stroke_width;
+	string transform;
 
 public:
-	my_text(int x, int y, Color fill, Color stroke, double stroke_width, int font_size, string content) : x(x), y(y), stroke(stroke), font_size(font_size), content(content), fill(fill), stroke_width(stroke_width) {}
-
-	void setTransform(const string& content) override {
-		this->t.parseTransform(content);
-	}
+	my_text(string name, string transform, int x, int y, Color fill, Color stroke, double stroke_width, int font_size, string content) : x(x), y(y), stroke(stroke), font_size(font_size), content(content), fill(fill), stroke_width(stroke_width), SVGElement(name), transform(transform) {}
 
 	void render(Graphics& graphics) override
 	{
-		this->t.applyTransform(graphics);
 		FontFamily fontFamily(L"Consolas");
 		Font font(&fontFamily, static_cast<REAL>(font_size), FontStyleRegular, UnitPixel);
 		SolidBrush brush(fill);
@@ -35,11 +31,15 @@ public:
 		StringFormat format;
 		path.AddString(std::wstring(content.begin(), content.end()).c_str(), -1, &fontFamily, FontStyleRegular, static_cast<REAL>(font_size), pointF, &format);
 		graphics.DrawPath(&pen, &path);
-		this->t.resetTransform(graphics);
 	}
 
 	~my_text() override {
 
+	}
+
+	string getTransform() override
+	{
+		return transform;
 	}
 };
 

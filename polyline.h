@@ -12,17 +12,12 @@ private:
 	int num_points;
 	Color stroke, fill;
 	double stroke_width, stroke_opacity, fill_opacity;
-
+	string transform;
 public:
-	my_polyline(int* points = nullptr, int num_points = 0, Color stroke = Color(0, 0, 0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 1) : points(points), num_points(num_points), stroke(stroke), fill(fill), stroke_width(stroke_width), stroke_opacity(stroke_opacity), fill_opacity(fill_opacity) {}
-
-	void setTransform(const string& content) override {
-		this->t.parseTransform(content);
-	}
+	my_polyline(string name, string transform, int* points = nullptr, int num_points = 0, Color stroke = Color(0, 0, 0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 1) : points(points), num_points(num_points), stroke(stroke), fill(fill), stroke_width(stroke_width), stroke_opacity(stroke_opacity), fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
 
 	void render(Graphics& graphics) override
 	{
-		this->t.applyTransform(graphics);
 		Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
 		Pen pen(stroke_color, this->stroke_width);
 		SolidBrush brush(Color(this->fill_opacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
@@ -33,11 +28,14 @@ public:
 		}
 		graphics.DrawLines(&pen, point_array, this->num_points / 2);
 		graphics.FillPolygon(&brush, point_array, this->num_points / 2);
-		this->t.resetTransform(graphics);
 	}
 
 	~my_polyline() override {
 		delete[] this->points;
+	}
+
+	string getTransform() override {
+		return this->transform;
 	}
 };
 

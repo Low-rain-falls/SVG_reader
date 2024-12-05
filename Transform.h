@@ -23,6 +23,7 @@ public:
     void applyTransform(Graphics& g);
     void parseTransform(const string& content);
     void resetTransform(Graphics& g);
+	void appleMultipleTransforms(Graphics& g);
 };
 
 void Transform::applyTransform(Graphics& g) {
@@ -31,7 +32,7 @@ void Transform::applyTransform(Graphics& g) {
         matrix.Translate(translateX, translateY);
     }
     if (rotateAngle != 0) {
-        matrix.Rotate(rotateAngle);
+        matrix.RotateAt(rotateAngle, PointF(rotateCenterX, rotateCenterY));
     }
     if (scaleX != 1 || scaleY != 1) {
         matrix.Scale(scaleX, scaleY);
@@ -65,11 +66,11 @@ void Transform::parseTransform(const string& content) {
         }
 
         if (type == "translate") {
-            translateX += values[0];
-            if (values.size() > 1) translateY += values[1];
+            translateX = values[0];
+            if (values.size() > 1) translateY = values[1];
         }
         else if (type == "rotate") {
-            rotateAngle += values[0];
+            rotateAngle = values[0];
             if (values.size() > 2) {
                 rotateCenterX = values[1];
                 rotateCenterY = values[2];
@@ -88,6 +89,14 @@ void Transform::parseTransform(const string& content) {
 
 void Transform::resetTransform(Graphics& g) {
     g.ResetTransform();
+}
+
+void Transform::appleMultipleTransforms(Graphics& g) {
+	Matrix matrix;
+	matrix.Translate(translateX, translateY);
+	matrix.RotateAt(rotateAngle, PointF(rotateCenterX, rotateCenterY));
+	matrix.Scale(scaleX, scaleY);
+	g.MultiplyTransform(&matrix);
 }
 
 #endif
