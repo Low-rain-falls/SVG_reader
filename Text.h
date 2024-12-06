@@ -14,12 +14,14 @@ private:
 	int font_size;
 	string content;
 	double stroke_width;
+	string text_anchor;
+	string font_style;
+	string font_family;
 	string transform;
 	
 
 public:
-	my_text(string name, string transform, int x, int y, Color fill, Color stroke, double stroke_width, int font_size, string content) : x(x), y(y), stroke(stroke), font_size(font_size), content(content), fill(fill), stroke_width(stroke_width), SVGElement(name), transform(transform) {}
-
+	my_text(string name, string transform, int x, int y, Color fill, Color stroke, double stroke_width, int font_size, string font_style, string text_anchor, string font_family, string content) : x(x), y(y), stroke(stroke), font_size(font_size), font_style(font_style), text_anchor(text_anchor), font_family(font_family), content(content), fill(fill), stroke_width(stroke_width), SVGElement(name), transform(transform) {}
 	void render(Graphics& graphics) override
 	{
 		FontFamily fontFamily(std::wstring(font_family.begin(), font_family.end()).c_str());
