@@ -191,7 +191,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 	return result;
 }
 
-void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, double group_stroke_width, double group_stroke_opacity, string group_fill, double group_fill_opacity, int group_fontSize = 10) {
+void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, double group_stroke_width, double group_stroke_opacity, string group_fill, double group_fill_opacity, int group_fontSize) {
 	for (xml_node<>* child = node->first_node(); child; child = child->next_sibling()) {
 
 		string fill = child->first_attribute("fill") ? child->first_attribute("fill")->value() : group_fill;
@@ -203,6 +203,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		double stroke_opacity = child->first_attribute("stroke-opacity") ? stof(child->first_attribute("stroke-opacity")->value()) : group_stroke_opacity;
 		double fill_opacity = child->first_attribute("fill-opacity") ? stof(child->first_attribute("fill-opacity")->value()) : group_fill_opacity;
 		fill_opacity = child->first_attribute("opacity") ? stof(child->first_attribute("opacity")->value()) : fill_opacity;
+		int fontSize = node->first_attribute("font-size") ? stoi(node->first_attribute("font-size")->value()) : group_fontSize;
 
 		// Process <circle> elements
 		if (string(child->name()) == "circle") {
@@ -292,7 +293,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		// Xử lý thẻ <g> (group) lồng vào nhau
 		else if (string(child->name()) == "g") {
 			SVGElement* element = new my_group(string(node->name()), transform);
-			handleGroup(element, child, stroke, stroke_width, stroke_opacity, fill, fill_opacity);
+			handleGroup(element, child, stroke, stroke_width, stroke_opacity, fill, fill_opacity, fontSize);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
 	}
@@ -326,12 +327,6 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 			boxValues.push_back(value);
 			if (ss.peek() == ' ') ss.ignore(); // Bỏ qua khoảng trắng
 		}
-	}
-	else {
-		boxValues.push_back(0);
-		boxValues.push_back(0);
-		boxValues.push_back(1);
-		boxValues.push_back(1);
 	}
 	
 	
@@ -452,24 +447,27 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-04.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-02.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
+	
+	if (!boxValues.empty()) {
+		double viewportHeight, viewportWidth;
+		if (width == "" || height == "") {
+			viewportWidth = 800;
+			viewportHeight = 800;
+		}
+		else {
+			viewportWidth = stof(width);
+			viewportHeight = stof(height);
+		}
 
-	double viewportHeight, viewportWidth;
-	if (width == "" || height == "") {
-		viewportWidth = 800;
-		viewportHeight = 800;
+		double scaleX = viewportWidth / boxValues[2];
+		double scaleY = viewportHeight / boxValues[3];
+
+		graphics.TranslateTransform(boxValues[0], boxValues[1]);
+		graphics.ScaleTransform(scaleX, scaleY);
 	}
-	else {
-		viewportWidth = stof(width);
-		viewportHeight = stof(height);
-	}
-
-	double scaleX = viewportWidth / boxValues[2];
-	double scaleY = viewportHeight / boxValues[3];
-
-	graphics.TranslateTransform(boxValues[0], boxValues[1]);
-	graphics.ScaleTransform(scaleX, scaleY);
+	
 
 	SVGRenderer renderer;
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
