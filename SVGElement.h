@@ -2,7 +2,7 @@
 #define SVGElEMENT_H
 
 #include "stdafx.h"
-#include "gdiplus.h"
+#include <gdiplus.h>
 #include "objidl.h"
 #include <iostream>
 #include <vector>
