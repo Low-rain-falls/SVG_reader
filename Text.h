@@ -20,7 +20,7 @@ private:
 
 public:
   my_text(string name, string transform, int x, int y, Color fill, Color stroke,
-          double stroke_width, int font_size, string font_style,
+          double stroke_width = 0, int font_size, string font_style,
           string text_anchor, string font_family, string content)
       : x(x), y(y), stroke(stroke), font_size(font_size),
         font_style(font_style), text_anchor(text_anchor),
