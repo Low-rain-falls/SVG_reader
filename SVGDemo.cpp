@@ -46,9 +46,23 @@ std::unordered_map<std::string, Gdiplus::Color> colorMap = {
 		{"grey", Gdiplus::Color(255, 128, 128, 128)},
 		{"skyblue", Gdiplus::Color(255, 135, 206, 235)}
 };
+Color hexatoRGB(string hex)
+{
+	if (hex == "none")
+	{
+		return Color(255, 255, 255, 255);
+	}
+	int r, g, b;
+	sscanf_s(hex.c_str(), "#%02x%02x%02x", &r, &g, &b);
+	return Color(255, r, g, b);
+}
 
 Color stoc(string rgb)
 {
+	if (rgb[0] == '#')
+	{
+		return hexatoRGB(rgb);
+	}
 	if (rgb == "none")
 	{
 		return Color(255, 255, 255, 255);
@@ -139,7 +153,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 					break;
 				}
 				num = "";
-				while (d[i] == ' ' || d[i] == ',')
+				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n')
 				{
 					i++;
 				}
@@ -154,7 +168,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 				}
 				float y = stof(num);
 				points.push_back(PointF(x, y));
-				while (d[i] == ' ' || d[i] == ',')
+				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n')
 				{
 					i++;
 				}
