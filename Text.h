@@ -30,6 +30,14 @@ public:
   void render(Graphics &graphics) override {
     FontFamily fontFamily(
         std::wstring(font_family.begin(), font_family.end()).c_str());
+    wstring safeFontFamily = std::wstring(font_family.begin(), font_family.end()).c_str());
+
+    if (safeFontFamily != L"times new roman" && safeFontFamily != L"arial") {
+      safeFontFamily = L"times new roman";
+    }
+
+    FontFamily fontFamily(safeFontFamily.c_str());
+
     FontStyle style =
         (font_style == "italic") ? FontStyleItalic : FontStyleRegular;
     Font font(&fontFamily, static_cast<REAL>(font_size), style, UnitPixel);
@@ -43,9 +51,9 @@ public:
 
     REAL adjusted_x = static_cast<REAL>(x);
     if (text_anchor == "middle") {
-      adjusted_x -= text_width / 2; // C?n gi?a
+      adjusted_x -= text_width / 2;
     } else if (text_anchor == "end") {
-      adjusted_x -= text_width; // C?n ph?i
+      adjusted_x -= text_width;
     }
 
     PointF pointF(static_cast<REAL>(adjusted_x), static_cast<REAL>(y));
