@@ -201,8 +201,10 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		}
 		// Process <text> elements
 		else if (string(child->name()) == "text") {
-			int x = stoi(child->first_attribute("x")->value());
-			int y = stoi(child->first_attribute("y")->value());
+			int dx = child->first_attribute("dx") ? stoi(child->first_attribute("dx")->value()) : 0;
+			int dy = child->first_attribute("dy") ? stoi(child->first_attribute("dy")->value()) : 0;
+			int x = stoi(child->first_attribute("x")->value()) + dx;
+			int y = stoi(child->first_attribute("y")->value()) + dy;
 			int fontSize = child->first_attribute("font-size") ? stoi(child->first_attribute("font-size")->value()) : 10;
 			string font_style = child->first_attribute("font-style") ? child->first_attribute("font-style")->value() : "";
 			string text_anchor = child->first_attribute("text-anchor") ? child->first_attribute("text-anchor")->value() : "";
@@ -324,8 +326,10 @@ vector<SVGElement*> parseSVG(string filePath) {
 			}
 			// Process <text> elements
 			else if (string(node->name()) == "text") {
-				int x = stoi(node->first_attribute("x")->value());
-				int y = stoi(node->first_attribute("y")->value());
+				int dx = node->first_attribute("dx") ? stoi(node->first_attribute("dx")->value()) : 0;
+				int dy = node->first_attribute("dy") ? stoi(node->first_attribute("dy")->value()) : 0;
+				int x = stoi(node->first_attribute("x")->value()) + dx;
+				int y = stoi(node->first_attribute("y")->value()) + dy;
 				int fontSize = node->first_attribute("font-size") ? stoi(node->first_attribute("font-size")->value()) : 10;
 				string font_style = node->first_attribute("font-style") ? node->first_attribute("font-style")->value() : "";
 				string text_anchor = node->first_attribute("text-anchor") ? node->first_attribute("text-anchor")->value() : "";
