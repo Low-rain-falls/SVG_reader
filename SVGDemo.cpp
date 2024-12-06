@@ -295,7 +295,7 @@ vector<SVGElement*> parseSVG(string filePath) {
 			Color fill_color = stoc(fill);
 			Color stroke_color = stoc(stroke);
 			string transform = node->first_attribute("transform") ? node->first_attribute("transform")->value() : "";
-			double stroke_width = node->first_attribute("stroke-width") ? stof(node->first_attribute("stroke-width")->value()) : 1.0;
+			double stroke_width = node->first_attribute("stroke-width") ? stof(node->first_attribute("stroke-width")->value()) : 0;
 			double stroke_opacity = node->first_attribute("stroke-opacity") ? stof(node->first_attribute("stroke-opacity")->value()) : 1.0;
 			double fill_opacity = node->first_attribute("fill-opacity") ? stof(node->first_attribute("fill-opacity")->value()) : 1.0;
 			fill_opacity = node->first_attribute("opacity") ? stof(node->first_attribute("opacity")->value()) : fill_opacity;
