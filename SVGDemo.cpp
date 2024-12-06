@@ -50,10 +50,20 @@ Color hexatoRGB(string hex)
 {
 	if (hex == "none")
 	{
-		return Color(255, 255, 255, 255);
+		return Color(255, 255, 255, 255);  // Return white if "none"
 	}
+
+	// Check if the hex string is 4 characters long (including the '#')
+	if (hex.length() == 4)
+	{
+		// Expand the 3-character shorthand to 6 characters
+		string expandedHex = "#" + string(1, hex[1]) + string(1, hex[1]) + string(1, hex[2]) + string(1, hex[2]) + string(1, hex[3]) + string(1, hex[3]);
+		hex = expandedHex;
+	}
+
 	int r, g, b;
 	sscanf_s(hex.c_str(), "#%02x%02x%02x", &r, &g, &b);
+
 	return Color(255, r, g, b);
 }
 
@@ -288,7 +298,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 	}
 }
 
-vector<SVGElement*> parseSVG(string filePath) {
+vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string &width, string &height) {
 	vector<SVGElement*> elements;
 	ifstream file(filePath);
 	if (!file.is_open()) {
@@ -303,6 +313,27 @@ vector<SVGElement*> parseSVG(string filePath) {
 	doc.parse<0>(&buffer[0]);
 
 	rapidxml::xml_node<>* svgNode = doc.first_node("svg");
+
+	width = svgNode->first_attribute("width") ? svgNode->first_attribute("width")->value() : "";
+	height = svgNode->first_attribute("height") ? svgNode->first_attribute("height")->value() : "";
+
+	string viewBox = svgNode->first_attribute("viewBox") ? svgNode->first_attribute("viewBox")->value() : "";
+
+	if (viewBox != "") {
+		std::istringstream ss(viewBox);
+		double value;
+		while (ss >> value) {
+			boxValues.push_back(value);
+			if (ss.peek() == ' ') ss.ignore(); // Bỏ qua khoảng trắng
+		}
+	}
+	else {
+		boxValues.push_back(0);
+		boxValues.push_back(0);
+		boxValues.push_back(1);
+		boxValues.push_back(1);
+	}
+	
 	
 	if (svgNode) {
 		for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling()) {
@@ -419,8 +450,26 @@ vector<SVGElement*> parseSVG(string filePath) {
 
 VOID OnPaint(HDC hdc)
 {
-	vector<SVGElement*> element = parseSVG("svg/svg-04.svg");
+	vector<double> boxValues;
+	string width, height;
+	vector<SVGElement*> element = parseSVG("svg-04.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
+
+	double viewportHeight, viewportWidth;
+	if (width == "" || height == "") {
+		viewportWidth = 800;
+		viewportHeight = 800;
+	}
+	else {
+		viewportWidth = stof(width);
+		viewportHeight = stof(height);
+	}
+
+	double scaleX = viewportWidth / boxValues[2];
+	double scaleY = viewportHeight / boxValues[3];
+
+	graphics.TranslateTransform(boxValues[0], boxValues[1]);
+	graphics.ScaleTransform(scaleX, scaleY);
 
 	SVGRenderer renderer;
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
