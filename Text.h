@@ -12,7 +12,7 @@ private:
   Color fill;
   int font_size;
   string content;
-  double stroke_width;
+  double stroke_width = 0;
   string text_anchor;
   string font_style;
   string font_family;
@@ -20,7 +20,7 @@ private:
 
 public:
   my_text(string name, string transform, int x, int y, Color fill, Color stroke,
-          double stroke_width = 0, int font_size, string font_style,
+          double stroke_width, int font_size, string font_style,
           string text_anchor, string font_family, string content)
       : x(x), y(y), stroke(stroke), font_size(font_size),
         font_style(font_style), text_anchor(text_anchor),
@@ -30,14 +30,6 @@ public:
   void render(Graphics &graphics) override {
     FontFamily fontFamily(
         std::wstring(font_family.begin(), font_family.end()).c_str());
-    wstring safeFontFamily = std::wstring(font_family.begin(), font_family.end()).c_str());
-
-    if (safeFontFamily != L"times new roman" && safeFontFamily != L"arial") {
-      safeFontFamily = L"times new roman";
-    }
-
-    FontFamily fontFamily(safeFontFamily.c_str());
-
     FontStyle style =
         (font_style == "italic") ? FontStyleItalic : FontStyleRegular;
     Font font(&fontFamily, static_cast<REAL>(font_size), style, UnitPixel);
@@ -59,13 +51,16 @@ public:
     PointF pointF(static_cast<REAL>(adjusted_x), static_cast<REAL>(y));
     graphics.DrawString(std::wstring(content.begin(), content.end()).c_str(),
                         -1, &font, pointF, &brush);
-    Pen pen(stroke, stroke_width);
-    GraphicsPath path;
-    StringFormat format;
-    path.AddString(std::wstring(content.begin(), content.end()).c_str(), -1,
-                   &fontFamily, style, static_cast<REAL>(font_size), pointF,
-                   &format);
-    graphics.DrawPath(&pen, &path);
+
+    if (stroke_width != 0) {
+      Pen pen(stroke, stroke_width);
+      GraphicsPath path;
+      StringFormat format;
+      path.AddString(std::wstring(content.begin(), content.end()).c_str(), -1,
+                     &fontFamily, style, static_cast<REAL>(font_size), pointF,
+                     &format);
+      graphics.DrawPath(&pen, &path);
+    }
   }
 
   ~my_text() override {}
