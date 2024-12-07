@@ -15,7 +15,7 @@
     </g>
   </g>
 
-  <rect stroke="darkslategray" x="0" y="0" width="1280" height="720" fill="deepskyblue" fill-opacity="0.24" />
+  <!--<rect stroke="darkslategray" x="0" y="0" width="1280" height="720" fill="deepskyblue" fill-opacity="0.24" />
   <polygon fill-opacity="0.72" fill="yellow" stroke="red" stroke-width="5" stroke-opacity="0.75"
     points="100,10 40,198 190,78 10,78 160,198" transform="translate(590, 10) scale(0.5)" />
 
@@ -43,6 +43,6 @@
   </g>
 
   <text font-family="times new roman" x="640" y="720" fill="yellow" font-size="40" stroke-opacity="0.75"
-    stroke-width="2.5" fill-opacity="0.95" stroke="darkmagenta" text-anchor="middle" font-style="italic">Bottom</text>
+    stroke-width="2.5" fill-opacity="0.95" stroke="darkmagenta" text-anchor="middle" font-style="italic">Bottom</text>-->
 
 </svg>

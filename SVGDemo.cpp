@@ -9,6 +9,7 @@
 #include <fstream>
 #include <string>
 #include <tuple>
+#include <cstring>
 #include <unordered_map>
 
 #include "SVGElement.h"
@@ -44,7 +45,8 @@ std::unordered_map<std::string, Gdiplus::Color> colorMap = {
 		{"blueviolet", Gdiplus::Color(255, 138, 43, 226)},
 		{"navy", Gdiplus::Color(255, 0, 0, 128)},
 		{"grey", Gdiplus::Color(255, 128, 128, 128)},
-		{"skyblue", Gdiplus::Color(255, 135, 206, 235)}
+		{"skyblue", Gdiplus::Color(255, 135, 206, 235)},
+		{"darkmagenta", Gdiplus::Color(255, 139, 0, 139)}
 };
 Color hexatoRGB(string hex)
 {
@@ -203,23 +205,23 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		double stroke_opacity = child->first_attribute("stroke-opacity") ? stof(child->first_attribute("stroke-opacity")->value()) : group_stroke_opacity;
 		double fill_opacity = child->first_attribute("fill-opacity") ? stof(child->first_attribute("fill-opacity")->value()) : group_fill_opacity;
 		fill_opacity = child->first_attribute("opacity") ? stof(child->first_attribute("opacity")->value()) : fill_opacity;
-		int fontSize = node->first_attribute("font-size") ? stoi(node->first_attribute("font-size")->value()) : group_fontSize;
+		int fontSize = child->first_attribute("font-size") ? stoi(child->first_attribute("font-size")->value()) : group_fontSize;
 
 		// Process <circle> elements
 		if (string(child->name()) == "circle") {
-			int cx = stoi(child->first_attribute("cx")->value());
-			int cy = stoi(child->first_attribute("cy")->value());
-			int r = stoi(child->first_attribute("r")->value());
+			int cx = child->first_attribute("cx") ? stoi(child->first_attribute("cx")->value()) : 0;
+			int cy = child->first_attribute("cy") ? stoi(child->first_attribute("cy")->value()) : 0;
+			int r = child->first_attribute("r") ? stoi(child->first_attribute("r")->value()) : 1;
 
 			SVGElement* element = new my_circle(string(node->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
 		// Process <rect> elements
 		else if (string(child->name()) == "rect") {
-			int x = stoi(child->first_attribute("x")->value());
-			int y = stoi(child->first_attribute("y")->value());
-			int width = stoi(child->first_attribute("width")->value());
-			int height = stoi(child->first_attribute("height")->value());
+			int x = child->first_attribute("x") ? stoi(child->first_attribute("x")->value()) : 0;
+			int y = child->first_attribute("y") ? stoi(child->first_attribute("y")->value()) : 0;
+			int width = child->first_attribute("width") ? stoi(child->first_attribute("width")->value()) : 1;
+			int height = child->first_attribute("height") ? stoi(child->first_attribute("height")->value()) : 1;
 
 			SVGElement* element = new my_rect(string(node->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
@@ -230,7 +232,6 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			int dy = child->first_attribute("dy") ? stoi(child->first_attribute("dy")->value()) : 0;
 			int x = stoi(child->first_attribute("x")->value()) + dx;
 			int y = stoi(child->first_attribute("y")->value()) + dy;
-			int fontSize = child->first_attribute("font-size") ? stoi(child->first_attribute("font-size")->value()) : 10;
 			string font_style = child->first_attribute("font-style") ? child->first_attribute("font-style")->value() : "";
 			string text_anchor = child->first_attribute("text-anchor") ? child->first_attribute("text-anchor")->value() : "";
 			string font_family = child->first_attribute("font-family") ? child->first_attribute("font-family")->value() : "Consolas";
@@ -251,10 +252,10 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		}
 		//<ellipse>
 		else if (string(child->name()) == "ellipse") {
-			int cx = stoi(child->first_attribute("cx")->value());
-			int cy = stoi(child->first_attribute("cy")->value());
-			int rx = stoi(child->first_attribute("rx")->value());
-			int ry = stoi(child->first_attribute("ry")->value());
+			int cx = child->first_attribute("cx") ? stoi(child->first_attribute("cx")->value()) : 0;
+			int cy = child->first_attribute("cy") ? stoi(child->first_attribute("cy")->value()) : 0;
+			int rx = child->first_attribute("rx") ? stoi(child->first_attribute("rx")->value()) : 0;
+			int ry = child->first_attribute("ry") ? stoi(child->first_attribute("ry")->value()) : 0;
 
 			SVGElement* element = new my_ellipse(string(node->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
@@ -316,7 +317,31 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 	rapidxml::xml_node<>* svgNode = doc.first_node("svg");
 
 	width = svgNode->first_attribute("width") ? svgNode->first_attribute("width")->value() : "";
+	if (width != "") {
+		string temp;
+		for (char c : width) {
+			if (isdigit(c) || c == '.' || c == '-') {
+				temp += c;
+			}
+			else {
+				break;
+			}
+		}
+		width = temp;
+	}
 	height = svgNode->first_attribute("height") ? svgNode->first_attribute("height")->value() : "";
+	if (height != "") {
+		string temp;
+		for (char c : height) {
+			if (isdigit(c) || c == '.' || c == '-') {
+				temp += c;
+			}
+			else {
+				break;
+			}
+		}
+		height = temp;
+	}
 
 	string viewBox = svgNode->first_attribute("viewBox") ? svgNode->first_attribute("viewBox")->value() : "";
 
@@ -325,7 +350,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 		double value;
 		while (ss >> value) {
 			boxValues.push_back(value);
-			if (ss.peek() == ' ') ss.ignore(); // Bỏ qua khoảng trắng
+			if (ss.peek() == ' ') ss.ignore();
 		}
 	}
 	
@@ -345,9 +370,9 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 
 			// Process <circle> elements
 			if (string(node->name()) == "circle") {
-				int cx = stoi(node->first_attribute("cx")->value());
-				int cy = stoi(node->first_attribute("cy")->value());
-				int r = stoi(node->first_attribute("r")->value());
+				int cx = node->first_attribute("cx") ? stoi(node->first_attribute("cx")->value()) : 0;
+				int cy = node->first_attribute("cy") ? stoi(node->first_attribute("cy")->value()) : 0;
+				int r = node->first_attribute("r") ? stoi(node->first_attribute("r")->value()) : 1;
 
 				SVGElement* element = new my_circle(string(node->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 
@@ -355,10 +380,10 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 			}
 			// Process <rect> elements
 			else if (string(node->name()) == "rect") {
-				int x = stoi(node->first_attribute("x")->value());
-				int y = stoi(node->first_attribute("y")->value());
-				int width = stoi(node->first_attribute("width")->value());
-				int height = stoi(node->first_attribute("height")->value());
+				int x = node->first_attribute("x") ? stoi(node->first_attribute("x")->value()) : 0;
+				int y = node->first_attribute("y") ? stoi(node->first_attribute("y")->value()) : 0;
+				int width = node->first_attribute("width") ? stoi(node->first_attribute("width")->value()) : 0;
+				int height = node->first_attribute("height") ? stoi(node->first_attribute("height")->value()) : 0;
 
 				SVGElement* element = new my_rect(string(node->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 
@@ -392,10 +417,10 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 			}
 			//<ellipse>
 			else if (string(node->name()) == "ellipse") {
-				int cx = stoi(node->first_attribute("cx")->value());
-				int cy = stoi(node->first_attribute("cy")->value());
-				int rx = stoi(node->first_attribute("rx")->value());
-				int ry = stoi(node->first_attribute("ry")->value());
+				int cx = node->first_attribute("cx") ? stoi(node->first_attribute("cx")->value()) : 0;
+				int cy = node->first_attribute("cy") ? stoi(node->first_attribute("cy")->value()) : 0;
+				int rx = node->first_attribute("rx") ? stoi(node->first_attribute("rx")->value()) : 0;
+				int ry = node->first_attribute("ry") ? stoi(node->first_attribute("cy")->value()) : 0;
 
 				SVGElement* element = new my_ellipse(string(node->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 
@@ -447,9 +472,9 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-02.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-08.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
-	
+
 	if (!boxValues.empty()) {
 		double viewportHeight, viewportWidth;
 		if (width == "" || height == "") {

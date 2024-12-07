@@ -43,11 +43,11 @@ public:
 		REAL adjusted_x = static_cast<REAL>(x);
 		if (text_anchor == "middle")
 		{
-			adjusted_x -= text_width / 2; // C?n gi?a
+			adjusted_x -= text_width / 2; 
 		}
 		else if (text_anchor == "end")
 		{
-			adjusted_x -= text_width; // C?n ph?i
+			adjusted_x -= text_width; 
 		}
 		
 		PointF pointF(static_cast<REAL>(adjusted_x), static_cast<REAL>(y));
