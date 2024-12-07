@@ -15,6 +15,10 @@ public:
 
 	void render(Graphics& graphics) override
 	{
+		if (width == 960)
+		{
+			width = 960;
+		}
 		Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
 		Pen pen(stroke_color, this->stroke_width);
 		SolidBrush brush(Color(this->fill_opacity* 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));

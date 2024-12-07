@@ -121,7 +121,7 @@ void my_path::render(Graphics& graphics)
 		}
 	}
 	graphics.FillPath(&brush, &path);
-	if (stroke_width != 1)
+	if (stroke_width != 0)
 	{
 		Pen pen(stroke_color, stroke_width);
 		graphics.DrawPath(&pen, &path);

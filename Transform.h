@@ -89,6 +89,9 @@ void Transform::parseTransform(const string& content) {
 
 void Transform::resetTransform(Graphics& g) {
     g.ResetTransform();
+	translateX = translateY = 0;
+	rotateAngle = rotateCenterX = rotateCenterY = 0;
+	scaleX = scaleY = 1;
 }
 
 void Transform::appleMultipleTransforms(Graphics& g) {
