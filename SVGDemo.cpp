@@ -46,7 +46,9 @@ std::unordered_map<std::string, Gdiplus::Color> colorMap = {
 		{"navy", Gdiplus::Color(255, 0, 0, 128)},
 		{"grey", Gdiplus::Color(255, 128, 128, 128)},
 		{"skyblue", Gdiplus::Color(255, 135, 206, 235)},
-		{"darkmagenta", Gdiplus::Color(255, 139, 0, 139)}
+		{"darkmagenta", Gdiplus::Color(255, 139, 0, 139)},
+		{"deepskyblue", Gdiplus::Color(255, 0, 191, 255)},
+		{"purple", Gdiplus::Color(255, 160, 32, 240)}
 };
 Color hexatoRGB(string hex)
 {
@@ -420,7 +422,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 				int cx = node->first_attribute("cx") ? stoi(node->first_attribute("cx")->value()) : 0;
 				int cy = node->first_attribute("cy") ? stoi(node->first_attribute("cy")->value()) : 0;
 				int rx = node->first_attribute("rx") ? stoi(node->first_attribute("rx")->value()) : 0;
-				int ry = node->first_attribute("ry") ? stoi(node->first_attribute("cy")->value()) : 0;
+				int ry = node->first_attribute("ry") ? stoi(node->first_attribute("ry")->value()) : 0;
 
 				SVGElement* element = new my_ellipse(string(node->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
 

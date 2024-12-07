@@ -15,15 +15,19 @@ class my_circle : public SVGElement
 		
 		void render(Graphics& graphic) override
 		{
-			Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
-			if (fill.GetR() != 255 && fill.GetG() != 255 && fill.GetB() != 255) {
-				this->fill_opacity = 1;
+			if ((this->fill.GetR() != 255 && this->fill.GetG() != 255 && this->fill.GetB() != 255)) {
+				Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
+				Color fillColor(255 * this->fill_opacity, this->fill.GetR(), this->fill.GetG(), this->fill.GetB());
+				Pen pen(strokeColor, this->stroke_width);
+				SolidBrush brush(fillColor);
+				graphic.FillEllipse(&brush, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
+				graphic.DrawEllipse(&pen, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
 			}
-			Color fillColor(255 * this->fill_opacity, this->fill.GetR(), this->fill.GetG(), this->fill.GetB());
-			Pen pen(strokeColor, this->stroke_width);
-			SolidBrush brush(fillColor);
-			graphic.FillEllipse(&brush, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
-			graphic.DrawEllipse(&pen, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
+			else {
+				Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
+				Pen pen(strokeColor, this->stroke_width);
+				graphic.DrawEllipse(&pen, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
+			}
 		}
 
 		~my_circle() override {
