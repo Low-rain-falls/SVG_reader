@@ -27,7 +27,7 @@ public:
 	}
 
 	~my_rect() override {
-		
+
 	}
 
 	string getTransform() override {

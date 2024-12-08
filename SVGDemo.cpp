@@ -30,7 +30,7 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 std::unordered_map<std::string, Gdiplus::Color> colorMap = {
-		{"red", Gdiplus::Color(255, 255, 0, 0)},       
+		{"red", Gdiplus::Color(255, 255, 0, 0)},
 		{"green", Gdiplus::Color(255, 0, 255, 0)},
 		{"blue", Gdiplus::Color(255, 0, 0, 255)},
 		{"yellow", Gdiplus::Color(255, 255, 255, 0)},
@@ -245,7 +245,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			string text_anchor = child->first_attribute("text-anchor") ? child->first_attribute("text-anchor")->value() : "start";
 			string font_family = child->first_attribute("font-family") ? child->first_attribute("font-family")->value() : "Consolas";
 			string content = child->value();
-			
+
 			if (!child->first_attribute("stroke") && !node->first_attribute("stroke")) {
 				stroke_width = 0;
 
@@ -371,8 +371,8 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 			if (ss.peek() == ' ') ss.ignore();
 		}
 	}
-	
-	
+
+
 	if (svgNode) {
 		for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling()) {
 			string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "rgb(255,255,255)";
@@ -426,13 +426,13 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 				string text_anchor = node->first_attribute("text-anchor") ? node->first_attribute("text-anchor")->value() : "start";
 				string font_family = node->first_attribute("font-family") ? node->first_attribute("font-family")->value() : "Consolas";
 				string content = node->value();
-				
+
 				if (!node->first_attribute("stroke")) {
 					stroke_width = 0;
 				}
 
 				SVGElement* element = new my_text(string(node->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
-				
+
 				elements.push_back(element);
 			}
 			//<polyline>
@@ -504,7 +504,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 	}
 }
 
-// 2 3 4 5 7 8 10 11 
+// 2 3 4 5 7 8 10 11
 // nearly: 13 14 17 18
 VOID OnPaint(HDC hdc)
 {
@@ -530,7 +530,7 @@ VOID OnPaint(HDC hdc)
 		graphics.TranslateTransform(boxValues[0], boxValues[1]);
 		graphics.ScaleTransform(scaleX, scaleY);
 	}
-	
+
 
 	SVGRenderer renderer;
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
