@@ -143,13 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="sample.svg" />
-    <None Include="svg-02.svg" />
-    <None Include="svg-03.svg" />
     <None Include="svg-04.svg" />
-    <None Include="svg-05.svg" />
-    <None Include="svg-07.svg" />
     <None Include="svg-08.svg" />
-    <None Include="svg-10.svg" />
+    <None Include="svg-15.svg" />
+    <None Include="svg-18.svg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

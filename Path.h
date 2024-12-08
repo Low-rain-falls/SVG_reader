@@ -1,4 +1,3 @@
-
 #ifndef PATH_H
 #define PATH_H
 
@@ -67,54 +66,64 @@ void my_path::render(Graphics& graphics)
 				endPoint = get<1>(d[i])[count] + endPoint;
 				count++;
 			}
+
 			break;
 		}
 		case 'C':
 			path.AddBezier(endPoint, get<1>(d[i])[0], get<1>(d[i])[1], get<1>(d[i])[2]);
 			endPoint = get<1>(d[i])[2];
+
 			break;
 		case 'c':
 		{
 			int lengthh = get<1>(d[i]).size();
 			for (int count = 0; count < lengthh; count += 3)
 			{
-				PointF p1 = get<1>(d[i])[count] + endPoint;
-				PointF p2 = get<1>(d[i])[count + 1] + endPoint;
-				PointF p3 = get<1>(d[i])[count + 2] + endPoint;
-				path.AddBezier(endPoint, p1, p2, p3);
-				endPoint = p3;
+				PointF p1 = get<1>(d[i])[count];
+				PointF p2 = get<1>(d[i])[count + 1];
+				PointF p3 = get<1>(d[i])[count + 2];
+				path.AddBezier(endPoint, p1 + endPoint, p2 + endPoint, p3 + endPoint);
+				endPoint = p3 + endPoint;
 			}
+
 			break;
 		}
 		case 'L':
 			path.AddLine(endPoint, get<1>(d[i])[0]);
 			endPoint = get<1>(d[i])[0];
+
 			break;
 		case 'l':
-			path.AddLine(endPoint, get<1>(d[i])[0] + endPoint);
+			path.AddLine(endPoint, PointF(get<1>(d[i])[0] + endPoint));
 			endPoint = endPoint + get<1>(d[i])[0];
+
 			break;
 		case 'H':
 			path.AddLine(endPoint, PointF(get<1>(d[i])[0].X, endPoint.Y));
 			endPoint = PointF(get<1>(d[i])[0].X, endPoint.Y);
+
 			break;
 		case 'h':
 			path.AddLine(endPoint, PointF(endPoint.X + get<1>(d[i])[0].X, endPoint.Y));
 			endPoint = PointF(endPoint.X + get<1>(d[i])[0].X, endPoint.Y);
+
 			break;
 		case 'V':
 			path.AddLine(endPoint, PointF(endPoint.X, get<1>(d[i])[0].Y));
 			endPoint = PointF(endPoint.X, get<1>(d[i])[0].Y);
+
 			break;
 		case 'v':
 			path.AddLine(endPoint, PointF(endPoint.X, endPoint.Y + get<1>(d[i])[0].Y));
 			endPoint = PointF(endPoint.X, endPoint.Y + get<1>(d[i])[0].Y);
+
 			break;
 		case 'z':
 		case 'Z':
 			path.AddLine(endPoint, startPoint);
 			endPoint = startPoint;
 			path.CloseFigure();
+
 			break;
 		default:
 			break;
