@@ -27,10 +27,6 @@ public:
     Pen pen(stroke_color, this->stroke_width);
     SolidBrush brush(fill_color);
 
-    /*graphic.FillEllipse(&brush, this->cx - this->rx, this->cy - this->ry,
-                        this->rx * 2, this->ry * 2);
-    graphic.DrawEllipse(&pen, this->cx - this->rx, this->cy - this->ry,
-                        this->rx * 2, this->ry * 2);*/
 	graphic.FillEllipse(&brush, static_cast<REAL>(this->cx - this->rx), static_cast<REAL>(this->cy - this->ry),
 		static_cast<REAL>(this->rx * 2), static_cast<REAL>(this->ry * 2));
 	graphic.DrawEllipse(&pen, static_cast<REAL>(this->cx - this->rx), static_cast<REAL>(this->cy - this->ry),

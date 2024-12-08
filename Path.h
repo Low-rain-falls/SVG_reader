@@ -86,8 +86,8 @@ void my_path::render(Graphics& graphics)
 				path.AddBezier(endPoint, p1, p2, p3);
 				endPoint = p3;
 			}
-		}
 			break;
+		}
 		case 'c':
 		{
 			int lengthh = get<1>(d[i]).size();
@@ -99,7 +99,6 @@ void my_path::render(Graphics& graphics)
 				path.AddBezier(endPoint, p1 + endPoint, p2 + endPoint, p3 + endPoint);
 				endPoint = p3 + endPoint;
 			}
-
 			break;
 		}
 		case 'L':
@@ -108,10 +107,17 @@ void my_path::render(Graphics& graphics)
 
 			break;
 		case 'l':
+		{
 			path.AddLine(endPoint, PointF(get<1>(d[i])[0] + endPoint));
 			endPoint = endPoint + get<1>(d[i])[0];
-
+			int lengthh = get<1>(d[i]).size();
+			for (int count = 1; count < lengthh; count++)
+			{
+				path.AddLine(endPoint, get<1>(d[i])[count] + endPoint);
+				endPoint = get<1>(d[i])[count] + endPoint;
+			}
 			break;
+		}
 		case 'H':
 			path.AddLine(endPoint, PointF(get<1>(d[i])[0].X, endPoint.Y));
 			endPoint = PointF(get<1>(d[i])[0].X, endPoint.Y);
@@ -138,6 +144,30 @@ void my_path::render(Graphics& graphics)
 			endPoint = startPoint;
 			path.CloseFigure();
 
+			break;
+		case 'S':
+			path.AddBezier(endPoint, endPoint, get<1>(d[i])[0], get<1>(d[i])[1]);
+			endPoint = get<1>(d[i])[1];
+			break;
+		case 's':
+			for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
+				PointF p1 = get<1>(d[i])[count] + endPoint;
+				PointF p2 = get<1>(d[i])[count + 1] + endPoint;
+				path.AddBezier(endPoint, endPoint, p1, p2); 
+				endPoint = p2;
+			}
+			break;
+		case 'Q':
+			path.AddBezier(endPoint, get<1>(d[i])[0], get<1>(d[i])[1], get<1>(d[i])[1]);
+			endPoint = get<1>(d[i])[1];
+			break;
+		case 'q':
+			for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
+				PointF p1 = get<1>(d[i])[count] + endPoint;
+				PointF p2 = get<1>(d[i])[count + 1] + endPoint;
+				path.AddBezier(endPoint, p1, p2, p2);
+				endPoint = p2;
+			}
 			break;
 		default:
 			break;

@@ -91,6 +91,18 @@ Color stoc(string rgb)
 
 	int r, g, b;
 	sscanf_s(rgb.c_str(), "rgb(%d, %d, %d)", &r, &g, &b);
+	if (r > 255)
+	{
+		r = 255;
+	}
+	if (g > 255)
+	{
+		g = 255;
+	}
+	if (b > 255)
+	{
+		b = 255;
+	}
 	return Color(r, g, b);
 }
 
@@ -130,7 +142,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 	vector<tuple<char, vector<PointF>>> result;
 	for (int i = 0; i < length; i++)
 	{
-		if (d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z')
+		if (d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S')
 		{
 			char command = d[i];
 			vector<PointF> points;
@@ -141,7 +153,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 			}
 			i++;
 
-			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z') && i < length)
+			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S') && i < length)
 			{
 				string num = "";
 				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
@@ -153,7 +165,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 						break;
 					}
 				}
-				float x = stod(num);
+				double x = stod(num);
 				if (command == 'V' || command == 'v')
 				{
 					points.push_back(PointF(0, x));
@@ -165,7 +177,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 					break;
 				}
 				num = "";
-				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n')
+				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n' || d[i] == '\t')
 				{
 					i++;
 				}
@@ -178,9 +190,9 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 						break;
 					}
 				}
-				float y = stod(num);
+				double y = stod(num);
 				points.push_back(PointF(x, y));
-				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n')
+				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n' || d[i] == '\t')
 				{
 					i++;
 				}
@@ -377,8 +389,8 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 
 	if (svgNode) {
 		for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling()) {
-			string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "rgb(255,255,255)";
-			string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "rgb(255,255,255)";
+			string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "rgb(0,0,0)";
+			string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "rgb(0,0,0)";
 			Color fill_color = stoc(fill);
 			Color stroke_color = stoc(stroke);
 			string transform = node->first_attribute("transform") ? node->first_attribute("transform")->value() : "";
@@ -506,13 +518,14 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	}
 }
 
-// 1 2 3 4 5 7 8 9 10 11 15
+// 1 2 3 4 5 7 8 9 10 11 12 15 16
 // nearly: 13 14 17 18
+// not done: 6
 VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-18.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-16.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
