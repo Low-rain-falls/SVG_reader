@@ -93,7 +93,7 @@ C:\Users\namha\source\repos\Project\Project\Rect.h(23,29): warning C4244: 'argum
 C:\Users\namha\source\repos\Project\Project\Rect.h(24,44): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
-C:\Users\namha\source\repos\Project\Project\Text.h(55,20): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\Text.h(53,20): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
 C:\Users\namha\source\repos\Project\Project\Path.h(38,41): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
@@ -115,18 +115,18 @@ C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(102,11): warning C4267: 
 C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(106,20): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(114,23): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(127,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,56): warning C4244: 'argument': conversion from '_Ty' to 'Gdiplus::REAL', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,56): warning C4244:         with
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,56): warning C4244:         [
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,56): warning C4244:             _Ty=double
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,56): warning C4244:         ]
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,42): warning C4244: 'argument': conversion from '_Ty' to 'Gdiplus::REAL', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,42): warning C4244:         with
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,42): warning C4244:         [
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,42): warning C4244:             _Ty=double
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(507,42): warning C4244:         ]
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(508,35): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(508,27): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(567,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
-C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(484,1): warning C4715: 'parseSVG': not all control paths return a value
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,56): warning C4244: 'argument': conversion from '_Ty' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,56): warning C4244:         with
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,56): warning C4244:         [
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,56): warning C4244:             _Ty=double
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,56): warning C4244:         ]
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,42): warning C4244: 'argument': conversion from '_Ty' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,42): warning C4244:         with
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,42): warning C4244:         [
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,42): warning C4244:             _Ty=double
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(529,42): warning C4244:         ]
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(530,35): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(530,27): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(589,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(504,1): warning C4715: 'parseSVG': not all control paths return a value
   Project.vcxproj -> C:\Users\namha\source\repos\Project\x64\Debug\Project.exe

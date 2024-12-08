@@ -213,6 +213,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		if (stroke == "none")
 		{
 			stroke_opacity = 0;
+			stroke_width = 0;
 		}
 
 		// Process <circle> elements
@@ -242,9 +243,13 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			int y = child->first_attribute("y") ? stoi(child->first_attribute("y")->value()) + dy : 0 - dy;
 			string font_style = child->first_attribute("font-style") ? child->first_attribute("font-style")->value() : "FontStyleRegular";
 			string text_anchor = child->first_attribute("text-anchor") ? child->first_attribute("text-anchor")->value() : "start";
-			string font_family = child->first_attribute("font-family") ? child->first_attribute("font-family")->value() : "sans-serif";
+			string font_family = child->first_attribute("font-family") ? child->first_attribute("font-family")->value() : "Consolas";
 			string content = child->value();
 			
+			if (!child->first_attribute("stroke") && !node->first_attribute("stroke")) {
+				stroke_width = 0;
+			}
+
 			SVGElement* element = new my_text(string(child->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
@@ -294,6 +299,10 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		else if (string(child->name()) == "path") {
 			string d = child->first_attribute("d")->value();
 			vector<tuple<char, vector<PointF>>> path = parsePath(d);
+
+			if (!child->first_attribute("stroke") && !node->first_attribute("stroke")) {
+				stroke_width = 0;
+			}
 
 			SVGElement* element = new my_path(string(child->name()), transform, path, fill_color, fill_opacity, stroke_color, stroke_width);
 			dynamic_cast<my_group*>(elements)->addElement(element);
@@ -382,6 +391,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 
 			if (stroke == "none") {
 				stroke_opacity = 0;
+				stroke_width = 0;
 			}
 
 			// Process <circle> elements
@@ -416,6 +426,10 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 				string font_family = node->first_attribute("font-family") ? node->first_attribute("font-family")->value() : "Consolas";
 				string content = node->value();
 				
+				if (!node->first_attribute("stroke")) {
+					stroke_width = 0;
+				}
+
 				SVGElement* element = new my_text(string(node->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
 				
 				elements.push_back(element);
@@ -466,6 +480,12 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 			else if (string(node->name()) == "path") {
 				string d = node->first_attribute("d")->value();
 				vector<tuple<char, vector<PointF>>> path = parsePath(d);
+
+				if (!node->first_attribute("stroke"))
+				{
+					stroke_width = 0;
+				}
+
 				SVGElement* element = new my_path(string(node->name()), transform, path, fill_color, fill_opacity, stroke_color, stroke_width);
 
 				elements.push_back(element);
@@ -483,11 +503,13 @@ vector<SVGElement*> parseSVG(string filePath, vector<double> &boxValues, string 
 	}
 }
 
+// 2 3 4 5 7 8 10 11 
+// nearly: 13 14 17 18
 VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-08.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-18.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
