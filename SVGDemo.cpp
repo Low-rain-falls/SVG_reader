@@ -248,6 +248,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			
 			if (!child->first_attribute("stroke") && !node->first_attribute("stroke")) {
 				stroke_width = 0;
+
 			}
 
 			SVGElement* element = new my_text(string(child->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
@@ -509,7 +510,7 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-18.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-08.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
