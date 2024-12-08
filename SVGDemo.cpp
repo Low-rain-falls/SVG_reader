@@ -144,7 +144,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z') && i < length)
 			{
 				string num = "";
-				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-')
+				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
 				{
 					num += d[i];
 					i++;
@@ -169,7 +169,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 				{
 					i++;
 				}
-				while (d[i] >= '0' && d[i] <= '9' || d[i] == '-')
+				while (d[i] >= '0' && d[i] <= '9' || d[i] == '-' || d[i] == '.')
 				{
 					num += d[i];
 					i++;
@@ -506,13 +506,13 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	}
 }
 
-// 2 3 4 5 7 8 10 11 15
+// 1 2 3 4 5 7 8 9 10 11 15
 // nearly: 13 14 17 18
 VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-17.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-18.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {

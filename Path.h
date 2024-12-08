@@ -44,15 +44,21 @@ void my_path::render(Graphics& graphics)
 		switch (get<0>(d[i]))
 		{
 		case 'M':
+		{
 			startPoint = get<1>(d[i])[0];
 			path.StartFigure();
 			endPoint = get<1>(d[i])[0];
-			if (get<1>(d[i]).size() > 1)
+			int count = 1;
+			int lengthh = get<1>(d[i]).size();
+			while (count < lengthh)
 			{
-				path.AddLine(endPoint, get<1>(d[i])[1]);
-				endPoint = get<1>(d[i])[1];
+				path.AddLine(endPoint, get<1>(d[i])[count]);
+				endPoint = get<1>(d[i])[count];
+				count++;
 			}
+
 			break;
+		}
 		case 'm':
 		{
 			startPoint = get<1>(d[i])[0];
@@ -70,9 +76,17 @@ void my_path::render(Graphics& graphics)
 			break;
 		}
 		case 'C':
-			path.AddBezier(endPoint, get<1>(d[i])[0], get<1>(d[i])[1], get<1>(d[i])[2]);
-			endPoint = get<1>(d[i])[2];
-
+		{
+			int lengthh = get<1>(d[i]).size();
+			for (int count = 0; count < lengthh; count += 3)
+			{
+				PointF p1 = get<1>(d[i])[count];
+				PointF p2 = get<1>(d[i])[count + 1];
+				PointF p3 = get<1>(d[i])[count + 2];
+				path.AddBezier(endPoint, p1, p2, p3);
+				endPoint = p3;
+			}
+		}
 			break;
 		case 'c':
 		{

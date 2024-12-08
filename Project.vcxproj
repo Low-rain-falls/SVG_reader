@@ -142,19 +142,22 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sample.svg" />
-    <None Include="svg-04.svg" />
-    <None Include="svg-08.svg" />
-    <None Include="svg-15.svg" />
-    <None Include="svg-18.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="SVGDemo.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="SVGDemo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="svg-01.svg" />
+    <None Include="svg-04.svg" />
+    <None Include="svg-12.svg" />
+    <None Include="svg-13.svg" />
+    <None Include="svg-14.svg" />
+    <None Include="svg-15.svg" />
+    <None Include="svg-16.svg" />
+    <None Include="svg-17.svg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

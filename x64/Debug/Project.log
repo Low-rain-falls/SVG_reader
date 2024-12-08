@@ -114,7 +114,13 @@ C:\Users\namha\source\repos\Project\Project\Rect.h(23,29): warning C4244: 'argum
 C:\Users\namha\source\repos\Project\Project\Rect.h(24,44): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
-C:\Users\namha\source\repos\Project\Project\Text.h(55,23): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\Text.h(35,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'SVGDemo.cpp')
+  
+C:\Users\namha\source\repos\Project\Project\Text.h(39,38): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'SVGDemo.cpp')
+  
+C:\Users\namha\source\repos\Project\Project\Text.h(74,20): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
 C:\Users\namha\source\repos\Project\Project\Path.h(37,41): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
@@ -123,13 +129,19 @@ C:\Users\namha\source\repos\Project\Project\Path.h(37,41): warning C4244: 'argum
 C:\Users\namha\source\repos\Project\Project\Path.h(41,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
-C:\Users\namha\source\repos\Project\Project\Path.h(62,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\namha\source\repos\Project\Project\Path.h(52,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
-C:\Users\namha\source\repos\Project\Project\Path.h(79,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\namha\source\repos\Project\Project\Path.h(68,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
-C:\Users\namha\source\repos\Project\Project\Path.h(135,25): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\namha\source\repos\Project\Project\Path.h(80,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'SVGDemo.cpp')
+  
+C:\Users\namha\source\repos\Project\Project\Path.h(93,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'SVGDemo.cpp')
+  
+C:\Users\namha\source\repos\Project\Project\Path.h(149,25): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
   (compiling source file 'SVGDemo.cpp')
   
 C:\Users\namha\source\repos\Project\Project\SVGDemo.cpp(116,23): warning C4244: '=': conversion from 'unsigned __int64' to 'double', possible loss of data
