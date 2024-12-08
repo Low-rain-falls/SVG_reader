@@ -16,17 +16,17 @@ public:
   void addElement(SVGElement *element) { this->elements.push_back(element); }
 
   void render(Graphics &graphic) override {
-    for (auto &element : elements) {
-      if (element->getTransform() != "") {
+    for (int i = 0; i < elements.size(); i++) {
+      if (elements[i]->getTransform() != "") {
         GraphicsState save = graphic.Save();
         Transform t;
-        t.parseTransform(element->getTransform());
+        t.parseTransform(elements[i]->getTransform());
         t.appleMultipleTransforms(graphic);
-        element->render(graphic);
+        elements[i]->render(graphic);
         graphic.Restore(save);
         continue;
       }
-      element->render(graphic);
+      elements[i]->render(graphic);
     }
   }
 

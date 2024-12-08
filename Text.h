@@ -33,7 +33,6 @@ public:
         (font_style == "italic") ? FontStyleItalic : FontStyleRegular;
     Font font(&fontFamily, static_cast<REAL>(font_size), style, UnitPixel);
     SolidBrush brush(fill);
-
     RectF boundingBox;
     graphics.MeasureString(std::wstring(content.begin(), content.end()).c_str(),
                            -1, &font, PointF(0, 0), &boundingBox);
@@ -45,6 +44,8 @@ public:
       adjusted_x -= text_width / 2;
     } else if (text_anchor == "end") {
       adjusted_x -= text_width;
+    } else if (text_anchor == "start") {
+      adjusted_x = static_cast<REAL>(x);
     }
 
     PointF pointF(static_cast<REAL>(adjusted_x), static_cast<REAL>(y));

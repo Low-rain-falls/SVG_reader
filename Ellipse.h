@@ -24,7 +24,6 @@ public:
                        this->stroke.GetG(), this->stroke.GetB());
     Color fill_color(255 * this->fill_opacity, this->fill.GetR(),
                      this->fill.GetG(), this->fill.GetB());
-
     Pen pen(stroke_color, this->stroke_width);
     SolidBrush brush(fill_color);
 
