@@ -510,7 +510,7 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-08.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-16 - Copy.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
