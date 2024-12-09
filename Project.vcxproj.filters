@@ -72,28 +72,20 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="svg-12.svg">
+    <None Include="sample.svg" />
+    <None Include="svg\svg-04.svg">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="svg-13.svg">
+    <None Include="svg\svg-02.svg">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="svg\svg-03.svg">
       <Filter>Source Files</Filter>
     </None>
     <None Include="svg-14.svg">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="svg-15.svg">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="svg-16.svg">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="svg-17.svg">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="svg-04.svg">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="svg-01.svg">
+    <None Include="svg-06.svg">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

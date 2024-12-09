@@ -19,7 +19,7 @@
 	<polygon fill-opacity="0.72" fill="yellow" stroke="red" stroke-width="5" stroke-opacity="0.75"
 	  points="100,10 40,198 190,78 10,78 160,198" transform="translate(590, 10) scale(0.5)" />
 
-	<g transform="translate(160, 150)" stroke-width="2" stroke="navy">
+	<g transform="translate(160, 90)" stroke-width="2" stroke="navy">
 		<rect fill-opacity="0.4" x="0" y="0" width="960" height="540" fill="rgb(0,100,0)" />
 
 		<g stroke-opacity="0.75" stroke="midnightblue" fill="rgb(153, 204, 255)" fill-opacity="0.5">
@@ -35,7 +35,7 @@
       </g>
 	</g>
 
-	<g fill="yellow" stroke="purple" font-family="times new roman" stroke-width="2.5">
+	<g fill="yellow" stroke="darkmagenta" font-family="times new roman" stroke-width="2.5">
       <text x="480" y="270" font-size="40" text-anchor="middle" font-style="italic">Middle</text>
       <text x="0" y="540" font-size="40">Left</text>
       <text x="960" y="540" font-size="40" text-anchor="end">Right</text>

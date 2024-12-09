@@ -36,8 +36,11 @@ void my_path::render(Graphics& graphics)
 	GraphicsPath path;
 	Color fill_colorr = Color(fill_opacity * 255, fill_color.GetR(), fill_color.GetG(), fill_color.GetB());
 	SolidBrush brush(fill_colorr);
+	path.SetFillMode(FillModeAlternate);
+
 	PointF endPoint = PointF(0, 0);
 	PointF startPoint;
+
 	int length = d.size();
 	for (int i = 0; i < length; i++)
 	{
@@ -45,140 +48,142 @@ void my_path::render(Graphics& graphics)
 		{
 		case 'M':
 		{
+			int numPoints = get<1>(d[i]).size();
 			startPoint = get<1>(d[i])[0];
 			path.StartFigure();
 			endPoint = get<1>(d[i])[0];
-			int count = 1;
-			int lengthh = get<1>(d[i]).size();
-			while (count < lengthh)
+			for (int j = 1; j < numPoints; j++) 
 			{
-				path.AddLine(endPoint, get<1>(d[i])[count]);
-				endPoint = get<1>(d[i])[count];
-				count++;
+				path.AddLine(endPoint, get<1>(d[i])[j]);
+				endPoint = get<1>(d[i])[j];
 			}
-
 			break;
 		}
-		case 'm':
+		case 'm': 
 		{
-			startPoint = get<1>(d[i])[0];
+			int numPoints = get<1>(d[i]).size();
+			startPoint = endPoint + get<1>(d[i])[0];
 			path.StartFigure();
-			endPoint = get<1>(d[i])[0];
-			int count = 1;
-			int lengthh = get<1>(d[i]).size();
-			while (count < lengthh)
+			endPoint = startPoint;
+			for (int j = 1; j < numPoints; j++) 
 			{
-				path.AddLine(endPoint, get<1>(d[i])[count] + endPoint);
-				endPoint = get<1>(d[i])[count] + endPoint;
-				count++;
+				PointF newPoint = endPoint + get<1>(d[i])[j];
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
 			}
-
 			break;
 		}
-		case 'C':
-		{
-			int lengthh = get<1>(d[i]).size();
-			for (int count = 0; count < lengthh; count += 3)
+		case 'L': 
+		{ 
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
 			{
-				PointF p1 = get<1>(d[i])[count];
-				PointF p2 = get<1>(d[i])[count + 1];
-				PointF p3 = get<1>(d[i])[count + 2];
+				path.AddLine(endPoint, get<1>(d[i])[j]);
+				endPoint = get<1>(d[i])[j];
+			}
+			break;
+		}
+		case 'l': 
+		{
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
+			{
+				PointF newPoint = endPoint + get<1>(d[i])[j];
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
+			}
+			break;
+		}
+		case 'C': 
+		{ 
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j += 3) 
+			{
+				PointF p1 = get<1>(d[i])[j];
+				PointF p2 = get<1>(d[i])[j + 1];
+				PointF p3 = get<1>(d[i])[j + 2];
 				path.AddBezier(endPoint, p1, p2, p3);
 				endPoint = p3;
 			}
 			break;
 		}
-		case 'c':
-		{
-			int lengthh = get<1>(d[i]).size();
-			for (int count = 0; count < lengthh; count += 3)
+		case 'c': 
+		{ 
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j += 3) 
 			{
-				PointF p1 = get<1>(d[i])[count];
-				PointF p2 = get<1>(d[i])[count + 1];
-				PointF p3 = get<1>(d[i])[count + 2];
-				path.AddBezier(endPoint, p1 + endPoint, p2 + endPoint, p3 + endPoint);
-				endPoint = p3 + endPoint;
+				PointF p1 = get<1>(d[i])[j] + endPoint;
+				PointF p2 = get<1>(d[i])[j + 1] + endPoint;
+				PointF p3 = get<1>(d[i])[j + 2] + endPoint;
+				path.AddBezier(endPoint, p1, p2, p3);
+				endPoint = p3;
 			}
 			break;
 		}
-		case 'L':
-			path.AddLine(endPoint, get<1>(d[i])[0]);
-			endPoint = get<1>(d[i])[0];
-
-			break;
-		case 'l':
+		case 'H': 
 		{
-			path.AddLine(endPoint, PointF(get<1>(d[i])[0] + endPoint));
-			endPoint = endPoint + get<1>(d[i])[0];
-			int lengthh = get<1>(d[i]).size();
-			for (int count = 1; count < lengthh; count++)
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
 			{
-				path.AddLine(endPoint, get<1>(d[i])[count] + endPoint);
-				endPoint = get<1>(d[i])[count] + endPoint;
+				PointF newPoint = PointF(get<1>(d[i])[j].X, endPoint.Y);
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
 			}
 			break;
 		}
-		case 'H':
-			path.AddLine(endPoint, PointF(get<1>(d[i])[0].X, endPoint.Y));
-			endPoint = PointF(get<1>(d[i])[0].X, endPoint.Y);
-
+		case 'h': 
+		{ 
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
+			{
+				PointF newPoint = PointF(endPoint.X + get<1>(d[i])[j].X, endPoint.Y);
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
+			}
 			break;
-		case 'h':
-			path.AddLine(endPoint, PointF(endPoint.X + get<1>(d[i])[0].X, endPoint.Y));
-			endPoint = PointF(endPoint.X + get<1>(d[i])[0].X, endPoint.Y);
-
-			break;
+		}
 		case 'V':
-			path.AddLine(endPoint, PointF(endPoint.X, get<1>(d[i])[0].Y));
-			endPoint = PointF(endPoint.X, get<1>(d[i])[0].Y);
-
+		{ 
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
+			{
+				PointF newPoint = PointF(endPoint.X, get<1>(d[i])[j].Y);
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
+			}
 			break;
-		case 'v':
-			path.AddLine(endPoint, PointF(endPoint.X, endPoint.Y + get<1>(d[i])[0].Y));
-			endPoint = PointF(endPoint.X, endPoint.Y + get<1>(d[i])[0].Y);
-
+		}
+		case 'v': 
+		{
+			int numPoints = get<1>(d[i]).size();
+			for (int j = 0; j < numPoints; j++) 
+			{
+				PointF newPoint = PointF(endPoint.X, endPoint.Y + get<1>(d[i])[j].Y);
+				path.AddLine(endPoint, newPoint);
+				endPoint = newPoint;
+			}
 			break;
-		case 'z':
+		}
 		case 'Z':
+		case 'z': 
+		{
 			path.AddLine(endPoint, startPoint);
 			endPoint = startPoint;
 			path.CloseFigure();
-
 			break;
-		case 'S':
-			path.AddBezier(endPoint, endPoint, get<1>(d[i])[0], get<1>(d[i])[1]);
-			endPoint = get<1>(d[i])[1];
-			break;
-		case 's':
-			for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
-				PointF p1 = get<1>(d[i])[count] + endPoint;
-				PointF p2 = get<1>(d[i])[count + 1] + endPoint;
-				path.AddBezier(endPoint, endPoint, p1, p2); 
-				endPoint = p2;
-			}
-			break;
-		case 'Q':
-			path.AddBezier(endPoint, get<1>(d[i])[0], get<1>(d[i])[1], get<1>(d[i])[1]);
-			endPoint = get<1>(d[i])[1];
-			break;
-		case 'q':
-			for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
-				PointF p1 = get<1>(d[i])[count] + endPoint;
-				PointF p2 = get<1>(d[i])[count + 1] + endPoint;
-				path.AddBezier(endPoint, p1, p2, p2);
-				endPoint = p2;
-			}
-			break;
+		}
 		default:
 			break;
 		}
 	}
-	graphics.FillPath(&brush, &path);
-	if (stroke_width != 0)
+
+	if (stroke_width != 0) 
 	{
 		Pen pen(stroke_color, stroke_width);
 		graphics.DrawPath(&pen, &path);
 	}
+
+	graphics.FillPath(&brush, &path);
 }
 
 #endif

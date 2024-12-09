@@ -29,6 +29,8 @@ using namespace rapidxml;
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
+string svgFileName = "";
+
 std::unordered_map<std::string, Gdiplus::Color> colorMap = {
 		{"red", Gdiplus::Color(255, 255, 0, 0)},
 		{"green", Gdiplus::Color(255, 0, 255, 0)},
@@ -390,7 +392,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	if (svgNode) {
 		for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling()) {
 			string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "rgb(0,0,0)";
-			string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "rgb(0,0,0)";
+			string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "rgb(255,255,255)";
 			Color fill_color = stoc(fill);
 			Color stroke_color = stoc(stroke);
 			string transform = node->first_attribute("transform") ? node->first_attribute("transform")->value() : "";
@@ -518,6 +520,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	}
 }
 
+
 // 1 2 3 4 5 7 8 9 10 11 12 15 16
 // nearly: 13 14 17 18
 // not done: 6
@@ -525,17 +528,24 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG("svg-16.svg", boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-17.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
 		double viewportHeight, viewportWidth;
 		if (width == "" || height == "") {
-			viewportWidth = 1280;
-			viewportHeight = 720;
-			if (boxValues[2] == boxValues[3])
+			if (boxValues[2] > boxValues[3])
+			{
+				viewportWidth = 1280;
+				viewportHeight = 720;
+			}
+			else if (boxValues[2] == boxValues[3])
 			{
 				viewportWidth = viewportHeight = 800;
+			}
+			else {
+				viewportWidth = 720;
+				viewportHeight = 1280;
 			}
 		}
 		else {
@@ -558,7 +568,7 @@ VOID OnPaint(HDC hdc)
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR, INT iCmdShow)
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdShow)
 {
 	HWND                hWnd;
 	MSG                 msg;
@@ -566,6 +576,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR, INT iCmdShow)
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
+	if (strlen(pCommandLine) > 0) {
+		svgFileName = pCommandLine;
+	}
 
 	// Initialize GDI+.
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
