@@ -52,20 +52,20 @@ void my_path::render(Graphics& graphics)
 			startPoint = get<1>(d[i])[0];
 			path.StartFigure();
 			endPoint = get<1>(d[i])[0];
-			for (int j = 1; j < numPoints; j++) 
+			for (int j = 1; j < numPoints; j++)
 			{
 				path.AddLine(endPoint, get<1>(d[i])[j]);
 				endPoint = get<1>(d[i])[j];
 			}
 			break;
 		}
-		case 'm': 
+		case 'm':
 		{
 			int numPoints = get<1>(d[i]).size();
 			startPoint = endPoint + get<1>(d[i])[0];
 			path.StartFigure();
 			endPoint = startPoint;
-			for (int j = 1; j < numPoints; j++) 
+			for (int j = 1; j < numPoints; j++)
 			{
 				PointF newPoint = endPoint + get<1>(d[i])[j];
 				path.AddLine(endPoint, newPoint);
@@ -73,20 +73,20 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'L': 
-		{ 
+		case 'L':
+		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				path.AddLine(endPoint, get<1>(d[i])[j]);
 				endPoint = get<1>(d[i])[j];
 			}
 			break;
 		}
-		case 'l': 
+		case 'l':
 		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				PointF newPoint = endPoint + get<1>(d[i])[j];
 				path.AddLine(endPoint, newPoint);
@@ -94,10 +94,10 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'C': 
-		{ 
+		case 'C':
+		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j += 3) 
+			for (int j = 0; j < numPoints; j += 3)
 			{
 				PointF p1 = get<1>(d[i])[j];
 				PointF p2 = get<1>(d[i])[j + 1];
@@ -107,10 +107,10 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'c': 
-		{ 
+		case 'c':
+		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j += 3) 
+			for (int j = 0; j < numPoints; j += 3)
 			{
 				PointF p1 = get<1>(d[i])[j] + endPoint;
 				PointF p2 = get<1>(d[i])[j + 1] + endPoint;
@@ -120,10 +120,10 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'H': 
+		case 'H':
 		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				PointF newPoint = PointF(get<1>(d[i])[j].X, endPoint.Y);
 				path.AddLine(endPoint, newPoint);
@@ -131,10 +131,10 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'h': 
-		{ 
+		case 'h':
+		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				PointF newPoint = PointF(endPoint.X + get<1>(d[i])[j].X, endPoint.Y);
 				path.AddLine(endPoint, newPoint);
@@ -143,9 +143,9 @@ void my_path::render(Graphics& graphics)
 			break;
 		}
 		case 'V':
-		{ 
+		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				PointF newPoint = PointF(endPoint.X, get<1>(d[i])[j].Y);
 				path.AddLine(endPoint, newPoint);
@@ -153,10 +153,10 @@ void my_path::render(Graphics& graphics)
 			}
 			break;
 		}
-		case 'v': 
+		case 'v':
 		{
 			int numPoints = get<1>(d[i]).size();
-			for (int j = 0; j < numPoints; j++) 
+			for (int j = 0; j < numPoints; j++)
 			{
 				PointF newPoint = PointF(endPoint.X, endPoint.Y + get<1>(d[i])[j].Y);
 				path.AddLine(endPoint, newPoint);
@@ -165,7 +165,7 @@ void my_path::render(Graphics& graphics)
 			break;
 		}
 		case 'Z':
-		case 'z': 
+		case 'z':
 		{
 			path.AddLine(endPoint, startPoint);
 			endPoint = startPoint;
@@ -177,7 +177,7 @@ void my_path::render(Graphics& graphics)
 		}
 	}
 
-	if (stroke_width != 0) 
+	if (stroke_width != 0)
 	{
 		Pen pen(stroke_color, stroke_width);
 		graphics.DrawPath(&pen, &path);
