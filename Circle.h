@@ -6,12 +6,12 @@
 class my_circle : public SVGElement
 {
 private:
-	int cx, cy, r;
+	double cx, cy, r;
 	double stroke_width, stroke_opacity, fill_opacity;
 	Color fill, stroke;
 	string transform;
 public:
-	my_circle(string name, string transform, int cx = 0, int cy = 0, int r = 1, Color stroke = Color(0, 0, 0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 0) : cx(cx), cy(cy), r(r), stroke(stroke), fill(fill), stroke_width(stroke_width), stroke_opacity(stroke_opacity), fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
+	my_circle(string name, string transform, double cx = 0, double cy = 0, double r = 1, Color stroke = Color(0, 0, 0), double stroke_width = 1, double stroke_opacity = 1, Color fill = Color(0, 0, 0), double fill_opacity = 0) : cx(cx), cy(cy), r(r), stroke(stroke), fill(fill), stroke_width(stroke_width), stroke_opacity(stroke_opacity), fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
 
 	void render(Graphics& graphic) override
 	{
@@ -19,8 +19,8 @@ public:
 		Color fillColor(255 * this->fill_opacity, this->fill.GetR(), this->fill.GetG(), this->fill.GetB());
 		Pen pen(strokeColor, this->stroke_width);
 		SolidBrush brush(fillColor);
-		graphic.FillEllipse(&brush, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
-		graphic.DrawEllipse(&pen, this->cx - this->r, this->cy - this->r, this->r * 2, this->r * 2);
+		graphic.FillEllipse(&brush, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
+		graphic.DrawEllipse(&pen, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
 
 	}
 
