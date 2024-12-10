@@ -528,17 +528,24 @@ VOID OnPaint(HDC hdc)
 {
 	vector<double> boxValues;
 	string width, height;
-	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height);
+	vector<SVGElement*> element = parseSVG("svg-17.svg", boxValues, width, height);
 	Gdiplus::Graphics graphics(hdc);
 
 	if (!boxValues.empty()) {
 		double viewportHeight, viewportWidth;
 		if (width == "" || height == "") {
-			viewportWidth = 600;
-			viewportHeight = 800;
-			if (boxValues[2] == boxValues[3])
+			if (boxValues[2] > boxValues[3])
+			{
+				viewportWidth = 1280;
+				viewportHeight = 720;
+			}
+			else if (boxValues[2] == boxValues[3])
 			{
 				viewportWidth = viewportHeight = 800;
+			}
+			else {
+				viewportWidth = 720;
+				viewportHeight = 1280;
 			}
 		}
 		else {
@@ -549,7 +556,7 @@ VOID OnPaint(HDC hdc)
 		double scaleX = viewportWidth / boxValues[2];
 		double scaleY = viewportHeight / boxValues[3];
 
-		graphics.TranslateTransform(-boxValues[0], -boxValues[1]);
+		graphics.TranslateTransform(boxValues[0], boxValues[1]);
 		graphics.ScaleTransform(scaleX, scaleY);
 	}
 
