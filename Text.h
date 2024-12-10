@@ -30,7 +30,7 @@ public:
 		//font - family = "Times New Roman,Times New Roman_MSFontService,sans-serif"
 		// handle multiple font families
 		string font_family_str = font_family;
-		
+
 		vector<wstring> font_families;
 		int pos = font_family_str.find(',');
 		if (pos != -1)
