@@ -20,7 +20,7 @@ private:
 
 public:
 	my_text(string name, string transform, double x, double y, Color fill, Color stroke,
-		double stroke_width, int font_size, string font_style,
+		double stroke_width, double font_size, string font_style,
 		string text_anchor, string font_family, string content)
 		: x(x), y(y), stroke(stroke), font_size(font_size),
 		font_style(font_style), text_anchor(text_anchor),
@@ -30,7 +30,7 @@ public:
 		//font - family = "Times New Roman,Times New Roman_MSFontService,sans-serif"
 		// handle multiple font families
 		string font_family_str = font_family;
-		
+
 		vector<wstring> font_families;
 		int pos = font_family_str.find(',');
 		if (pos != -1)

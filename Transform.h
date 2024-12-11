@@ -23,7 +23,7 @@ public:
     void applyTransform(Graphics& g);
     void parseTransform(const string& content);
     void resetTransform(Graphics& g);
-	void appleMultipleTransforms(Graphics& g);
+	void applyMultipleTransforms(Graphics& g);
 };
 
 void Transform::applyTransform(Graphics& g) {
@@ -94,11 +94,11 @@ void Transform::resetTransform(Graphics& g) {
 	scaleX = scaleY = 1;
 }
 
-void Transform::appleMultipleTransforms(Graphics& g) {
+void Transform::applyMultipleTransforms(Graphics& g) {
 	Matrix matrix;
-    matrix.Translate(translateX, translateY);
+	matrix.Translate(translateX, translateY);
 	matrix.RotateAt(rotateAngle, PointF(rotateCenterX, rotateCenterY));
-    matrix.Scale(scaleX, scaleY);
+	matrix.Scale(scaleX, scaleY);
 	g.MultiplyTransform(&matrix);
 }
 

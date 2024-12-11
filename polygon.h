@@ -13,14 +13,14 @@
 class my_polygon : public SVGElement {
 private:
 	double* points;
-	double num_points;
+	int num_points;
 	Color stroke, fill;
 	double stroke_width, stroke_opacity, fill_opacity;
 	string transform;
 
 public:
 	my_polygon(string name, string transform, double* points = nullptr,
-		double num_points = 0, Color stroke = Color(0, 0, 0),
+		int num_points = 0, Color stroke = Color(0, 0, 0),
 		double stroke_width = 1, double stroke_opacity = 1,
 		Color fill = Color(0, 0, 0), double fill_opacity = 1)
 		: points(points), num_points(num_points), stroke(stroke), fill(fill),

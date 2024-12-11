@@ -10,7 +10,7 @@
 
 class my_polyline : public SVGElement {
 private:
-    double *points;
+  double *points;
   int num_points;
   Color stroke, fill;
   double stroke_width, stroke_opacity, fill_opacity;
