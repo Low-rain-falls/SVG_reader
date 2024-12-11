@@ -230,8 +230,6 @@ void handleGroup(SVGElement *elements, xml_node<> *node, string group_stroke,
 
     if (fill == "none") {
       fill_opacity = 0;
-    } else {
-      fill_opacity = 1;
     }
 
     if (stroke == "none") {

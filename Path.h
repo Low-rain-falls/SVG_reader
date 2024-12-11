@@ -157,6 +157,35 @@ void my_path::render(Graphics &graphics) {
       path.CloseFigure();
       break;
     }
+    case 'Q': {
+      path.AddBezier(endPoint, get<1>(d[i])[0], get<1>(d[i])[1],
+                     get<1>(d[i])[1]);
+      endPoint = get<1>(d[i])[1];
+      break;
+    }
+    case 'q': {
+      for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
+        PointF p1 = get<1>(d[i])[count] + endPoint;
+        PointF p2 = get<1>(d[i])[count + 1] + endPoint;
+        path.AddBezier(endPoint, p1, p2, p2);
+        endPoint = p2;
+      }
+      break;
+    }
+    case 'S': {
+      path.AddBezier(endPoint, endPoint, get<1>(d[i])[0], get<1>(d[i])[1]);
+      endPoint = get<1>(d[i])[1];
+      break;
+    }
+    case 's': {
+      for (int count = 0; count < get<1>(d[i]).size(); count += 2) {
+        PointF p1 = get<1>(d[i])[count] + endPoint;
+        PointF p2 = get<1>(d[i])[count + 1] + endPoint;
+        path.AddBezier(endPoint, endPoint, p1, p2);
+        endPoint = p2;
+      }
+      break;
+    }
     default:
       break;
     }
