@@ -1,3 +1,0 @@
-/home/tricao/SVG_reader/build/CMakeFiles/SVGDemo.dir
-/home/tricao/SVG_reader/build/CMakeFiles/edit_cache.dir
-/home/tricao/SVG_reader/build/CMakeFiles/rebuild_cache.dir
