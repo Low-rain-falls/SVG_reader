@@ -1,3 +1,4 @@
+#include <cinttypes>
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "rapidxml.hpp"
@@ -454,6 +455,13 @@ vector<SVGElement *> parseSVG(string filePath, vector<double> &boxValues,
       if (ss.peek() == ' ')
         ss.ignore();
     }
+
+    if (boxValues.size() != 4) {
+      std::cerr << "Invalid viewBox" << std::endl;
+      boxValues = {0, 0, 100, 100};
+    } else {
+      boxValues = {0, 0, 100, 100};
+    }
   }
 
   if (svgNode) {
@@ -663,7 +671,9 @@ vector<SVGElement *> parseSVG(string filePath, vector<double> &boxValues,
   }
 }
 
-// 1 2 3 4 5 7 8 9 10 11 12 13 15 16 17 18
+// 1 2 3 4 5 7 8 9 10 11 12 15 16
+// nearly: 13 14 17 18
+// not done: 6
 VOID OnPaint(HDC hdc) {
   vector<double> boxValues;
   string width, height;
