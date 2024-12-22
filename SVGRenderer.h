@@ -16,10 +16,10 @@ public:
 void SVGRenderer::render(Graphics &graphic, vector<SVGElement *> element) {
 
   for (auto i : element) {
-    string transform = i->getTransform();
-    if (transform != "") {
-      this->transform.parseTransform(transform);
-      this->transform.applyTransform(graphic);
+    string transforms = i->getTransform();
+    if (transforms != "") {
+      this->transform.parseTransform(transforms);
+      this->transform.appleMultipleTransforms(graphic);
       i->render(graphic);
       this->transform.resetTransform(graphic);
       continue;
