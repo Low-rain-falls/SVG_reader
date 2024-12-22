@@ -608,7 +608,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdSh
 	hWnd = CreateWindow(
 		TEXT("GettingStarted"),   // window class name
 		TEXT("SVG Demo"),  // window caption
-		WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL,      // window style
+		WS_OVERLAPPEDWINDOW,      // window style
 		CW_USEDEFAULT,            // initial x position
 		CW_USEDEFAULT,            // initial y position
 		CW_USEDEFAULT,            // initial x size
