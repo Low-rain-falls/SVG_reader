@@ -525,18 +525,12 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	}
 }
 
-
-// 1 2 3 4 5 7 8 9 10 11 12 15 16
-// nearly: 13 14 17 18
-// not done: 6
-VOID OnPaint(HDC hdc)
+VOID OnPaint(HDC hdc,Graphics& graphics)
 {
 	vector<double> boxValues;
 	string width, height;
-	svgFileName = "svg/svg-17.svg";
+	svgFileName = "svg/svg-07.svg";
 	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height);
-	Graphics graphics(hdc);
-
 
 	if (!boxValues.empty()) {
 
@@ -563,17 +557,19 @@ VOID OnPaint(HDC hdc)
 		{
 			double translateX = (viewportWidth - viewBoxWidth * scale) / 2.0;
 			double translateY = (viewportHeight - viewBoxHeight * scale) / 2.0;
-			graphics.TranslateTransform(static_cast<float>(translateX), static_cast<float>(translateY));
+			//graphics.TranslateTransform(static_cast<float>(translateX), static_cast<float>(translateY));
+			graphics.MultiplyTransform(new Matrix(1, 0, 0, 1, translateX, translateY));
 		}
-		graphics.ScaleTransform(static_cast<float>(scale), static_cast<float>(scale));
-		graphics.TranslateTransform(static_cast<float>(-boxValues[0]), static_cast<float>(-boxValues[1]));
+		/*graphics.ScaleTransform(static_cast<float>(scale), static_cast<float>(scale));
+		graphics.TranslateTransform(static_cast<float>(-boxValues[0]), static_cast<float>(-boxValues[1]));*/
+		graphics.MultiplyTransform(new Matrix(static_cast<float>(scale), 0, 0, static_cast<float>(scale), 0, 0));
+		graphics.MultiplyTransform(new Matrix(1, 0, 0, 1, -boxValues[0], -boxValues[1]));
 	}
 
 	SVGRenderer renderer;
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
 	renderer.render(graphics, element);
 }
-
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -608,7 +604,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdSh
 	hWnd = CreateWindow(
 		TEXT("GettingStarted"),   // window class name
 		TEXT("SVG Demo"),  // window caption
-		WS_OVERLAPPEDWINDOW,      // window style
+		WS_OVERLAPPEDWINDOW | WS_VSCROLL | WS_HSCROLL,      // window style
 		CW_USEDEFAULT,            // initial x position
 		CW_USEDEFAULT,            // initial y position
 		CW_USEDEFAULT,            // initial x size
@@ -618,9 +614,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdSh
 		hInstance,                // program instance handle
 		NULL);                    // creation parameters
 
-	ShowWindow(hWnd, iCmdShow);
+	ShowWindow(hWnd, SW_MAXIMIZE);
 	UpdateWindow(hWnd);
-
+	
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);
@@ -631,19 +627,94 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdSh
 	return msg.wParam;
 }  // WinMain
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
-	WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HDC          hdc;
 	PAINTSTRUCT  ps;
-
+	static int scrollPosV = 0;
+	static int scrollPosH = 0;
 	switch (message)
 	{
+	case WM_CREATE:
+	{
+		SCROLLINFO si = { sizeof(si) };
+		si.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
+		si.nMin = 0;
+		si.nMax = 100000;
+		si.nPage = 1000;
+		si.nPos = 0;
+		SetScrollInfo(hWnd, SB_VERT, &si, TRUE);
+		SetScrollInfo(hWnd, SB_HORZ, &si, TRUE);
+		break;
+	}
+
+	case WM_VSCROLL:
+	{
+		int oldPos = scrollPosV;
+		SCROLLINFO si = { sizeof(si) };
+		si.fMask = SIF_ALL;
+		GetScrollInfo(hWnd, SB_VERT, &si);
+
+		switch (LOWORD(wParam))
+		{
+		case SB_LINEUP: scrollPosV -= 10; break;
+		case SB_LINEDOWN: scrollPosV += 10; break;
+		case SB_PAGEUP: scrollPosV -= si.nPage; break;
+		case SB_PAGEDOWN: scrollPosV += si.nPage; break;
+		case SB_THUMBTRACK:
+			si.fMask = SIF_TRACKPOS;
+			GetScrollInfo(hWnd, SB_VERT, &si);
+			scrollPosV = si.nTrackPos;
+			break;
+		}
+		scrollPosV = max(0, min(scrollPosV, 100000));
+
+		if (scrollPosV != oldPos)
+		{
+			SetScrollPos(hWnd, SB_VERT, scrollPosV, TRUE);
+			InvalidateRect(hWnd, NULL, TRUE);
+		}
+		break;
+	}
+
+	case WM_HSCROLL:
+	{
+		int oldPos = scrollPosH; // Track old position
+		SCROLLINFO si = { sizeof(si) };
+		si.fMask = SIF_ALL;
+		GetScrollInfo(hWnd, SB_HORZ, &si);
+
+		switch (LOWORD(wParam))
+		{
+		case SB_LINEUP: scrollPosH -= 10; break;
+		case SB_LINEDOWN: scrollPosH += 10; break;
+		case SB_PAGEUP: scrollPosH -= si.nPage; break;
+		case SB_PAGEDOWN: scrollPosH += si.nPage; break;
+		case SB_THUMBTRACK:
+			si.fMask = SIF_TRACKPOS;
+			GetScrollInfo(hWnd, SB_HORZ, &si);
+			scrollPosH = si.nTrackPos;
+			break;
+		}
+		scrollPosH = max(0, min(scrollPosH, 100000));
+
+		if (scrollPosH != oldPos)
+		{
+			SetScrollPos(hWnd, SB_HORZ, scrollPosH, TRUE);
+			InvalidateRect(hWnd, NULL, TRUE);
+		}
+		break;
+	}
 	case WM_PAINT:
+	{
 		hdc = BeginPaint(hWnd, &ps);
-		OnPaint(hdc);
+		Graphics graphics(hdc);
+		graphics.TranslateTransform(0, -scrollPosV, MatrixOrderAppend);
+		graphics.TranslateTransform(-scrollPosH, 0, MatrixOrderAppend);
+		OnPaint(hdc, graphics);
 		EndPaint(hWnd, &ps);
 		return 0;
+	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
