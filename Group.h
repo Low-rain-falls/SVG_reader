@@ -15,18 +15,18 @@ public:
 
   void addElement(SVGElement *element) { this->elements.push_back(element); }
 
-  void render(Graphics &graphic) override {
+  void render(Graphics &graphic, vector<LinearGradient> gradients) override {
     for (int i = 0; i < elements.size(); i++) {
       if (elements[i]->getTransform() != "") {
         GraphicsState save = graphic.Save();
         Transform t;
         t.parseTransform(elements[i]->getTransform());
         t.appleMultipleTransforms(graphic);
-        elements[i]->render(graphic);
+        elements[i]->render(graphic, gradients);
         graphic.Restore(save);
         continue;
       }
-      elements[i]->render(graphic);
+      elements[i]->render(graphic, gradients);
     }
   }
 

@@ -24,6 +24,7 @@
 #include "Text.h"
 #include "Path.h"
 #include "Group.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -31,83 +32,6 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 string svgFileName = "";
-
-std::unordered_map<std::string, Gdiplus::Color> colorMap = {
-		{"red", Gdiplus::Color(255, 255, 0, 0)},
-		{"green", Gdiplus::Color(255, 0, 255, 0)},
-		{"blue", Gdiplus::Color(255, 0, 0, 255)},
-		{"yellow", Gdiplus::Color(255, 255, 255, 0)},
-		{"cyan", Gdiplus::Color(255, 0, 255, 255)},
-		{"magenta", Gdiplus::Color(255, 255, 0, 255)},
-		{"black", Gdiplus::Color(255, 0, 0, 0)},
-		{"white", Gdiplus::Color(255, 255, 255, 255)},
-		{"gray", Gdiplus::Color(255, 128, 128, 128)},
-		{"orange", Gdiplus::Color(255, 255, 165, 0)},
-		{"darkslategray", Gdiplus::Color(255, 47, 79, 79)},
-		{"midnightblue", Gdiplus::Color(255, 25, 25, 112)},
-		{"blueviolet", Gdiplus::Color(255, 138, 43, 226)},
-		{"navy", Gdiplus::Color(255, 0, 0, 128)},
-		{"grey", Gdiplus::Color(255, 128, 128, 128)},
-		{"skyblue", Gdiplus::Color(255, 135, 206, 235)},
-		{"darkmagenta", Gdiplus::Color(255, 139, 0, 139)},
-		{"deepskyblue", Gdiplus::Color(255, 0, 191, 255)},
-		{"purple", Gdiplus::Color(255, 160, 32, 240)}
-};
-
-Color hexatoRGB(string hex)
-{
-	// Check if the hex string is 4 characters long (including the '#')
-	if (hex.length() == 4)
-	{
-		// Expand the 3-character shorthand to 6 characters
-		string expandedHex = "#" + string(1, hex[1]) + string(1, hex[1]) + string(1, hex[2]) + string(1, hex[2]) + string(1, hex[3]) + string(1, hex[3]);
-		hex = expandedHex;
-	}
-
-	int r, g, b;
-	sscanf_s(hex.c_str(), "#%02x%02x%02x", &r, &g, &b);
-
-	return Color(r, g, b);
-}
-
-Color stoc(string rgb)
-{
-	if (rgb == "none")
-	{
-		return Color(255, 255, 255);
-	}
-	if (rgb[0] == '#')
-	{
-		return hexatoRGB(rgb);
-	}
-
-	string check = rgb.substr(0, 3);
-	if (check != "rgb") {
-		auto it = colorMap.find(rgb);
-		if (it != colorMap.end()) {
-			return it->second;
-		}
-		else {
-			return Color(255, 255, 255);
-		}
-	}
-
-	int r, g, b;
-	sscanf_s(rgb.c_str(), "rgb(%d, %d, %d)", &r, &g, &b);
-	if (r > 255)
-	{
-		r = 255;
-	}
-	if (g > 255)
-	{
-		g = 255;
-	}
-	if (b > 255)
-	{
-		b = 255;
-	}
-	return Color(r, g, b);
-}
 
 double* stoArr(string points, double& num_points)
 {
@@ -149,7 +73,7 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 	vector<tuple<char, vector<PointF>>> result;
 	for (int i = 0; i < length; i++)
 	{
-		if (d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S')
+		if (d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S' || d[i] == 'A' || d[i] == 'a')
 		{
 			char command = d[i];
 			vector<PointF> points;
@@ -160,13 +84,22 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 			}
 			i++;
 
-			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S') && i < length)
+			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S' || d[i] == 'A' || d[i] == 'a') && i < length)
 			{
 				string num = "";
 				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
 				{
+					if (d[i] == '.' && num == "")
+					{
+						num += '0';
+					}
 					num += d[i];
 					i++;
+					if (d[i] == '.' && num == "-")
+					{
+						num += '0';
+						continue;
+					}
 					if (d[i] == '-')
 					{
 						break;
@@ -188,11 +121,20 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 				{
 					i++;
 				}
-				while (d[i] >= '0' && d[i] <= '9' || d[i] == '-' || d[i] == '.')
+				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
 				{
+					if (d[i] == '.' && num == "")
+					{
+						num += '0';
+					}
 					num += d[i];
 					i++;
-					if (d[i] == '-')
+					if (d[i] == '.' && num == "-")
+					{
+						num += '0';
+						continue;
+					}
+					if ((d[i] == '-' || d[i] == '.') && num.find('.') != -1)
 					{
 						break;
 					}
@@ -217,15 +159,13 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 
 		string fill = child->first_attribute("fill") ? child->first_attribute("fill")->value() : group_fill;
 		string stroke = child->first_attribute("stroke") ? child->first_attribute("stroke")->value() : group_stroke;
-		Color fill_color = stoc(fill);
-		Color stroke_color = stoc(stroke);
 		string transform = child->first_attribute("transform") ? child->first_attribute("transform")->value() : "";
 		double stroke_width = child->first_attribute("stroke-width") ? stod(child->first_attribute("stroke-width")->value()) : group_stroke_width;
 		double stroke_opacity = child->first_attribute("stroke-opacity") ? stod(child->first_attribute("stroke-opacity")->value()) : group_stroke_opacity;
 		double fill_opacity = child->first_attribute("fill-opacity") ? stod(child->first_attribute("fill-opacity")->value()) : group_fill_opacity;
 		fill_opacity = child->first_attribute("opacity") ? stod(child->first_attribute("opacity")->value()) : fill_opacity;
 		double fontSize = child->first_attribute("font-size") ? stoi(child->first_attribute("font-size")->value()) : group_fontSize;
-
+		Color stroke_color = stoc(stroke);
 		if (fill == "none")
 		{
 			fill_opacity = 0;
@@ -243,7 +183,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double cy = child->first_attribute("cy") ? stod(child->first_attribute("cy")->value()) : 0;
 			double r = stod(child->first_attribute("r")->value());
 
-			SVGElement* element = new my_circle(string(child->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+			SVGElement* element = new my_circle(string(child->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
 		// Process <rect> elements
@@ -253,7 +193,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double width = child->first_attribute("width") ? stod(child->first_attribute("width")->value()) : 0;
 			double height = child->first_attribute("height") ? stod(child->first_attribute("height")->value()) : 0;
 
-			SVGElement* element = new my_rect(string(child->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+			SVGElement* element = new my_rect(string(child->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
 		// Process <text> elements
@@ -272,7 +212,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 
 			}
 
-			SVGElement* element = new my_text(string(child->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
+			SVGElement* element = new my_text(string(child->name()), transform, x, y - fontSize, fill, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 		}
 		//<polyline>
@@ -281,7 +221,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double num_points = 0;
 			double* pointsArr = stoArr(points, num_points);
 
-			SVGElement* element = new my_polyline(string(child->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+			SVGElement* element = new my_polyline(string(child->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 
 		}
@@ -292,7 +232,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double rx = stod(child->first_attribute("rx")->value());
 			double ry = stod(child->first_attribute("ry")->value());
 
-			SVGElement* element = new my_ellipse(string(child->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+			SVGElement* element = new my_ellipse(string(child->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 
 		}
@@ -302,7 +242,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double num_points = 0;
 			double* pointsArr = stoArr(points, num_points);
 
-			SVGElement* element = new my_polygon(string(child->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+			SVGElement* element = new my_polygon(string(child->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 
 		}
@@ -313,7 +253,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			double x2 = child->first_attribute("x2") ? stod(child->first_attribute("x2")->value()) : 0;
 			double y2 = child->first_attribute("y2") ? stod(child->first_attribute("y2")->value()) : 0;
 
-			SVGElement* element = new my_line(string(child->name()), transform, x1, y1, x2, y2, stroke_color, stroke_width, stroke_opacity, NULL, NULL);
+			SVGElement* element = new my_line(string(child->name()), transform, x1, y1, x2, y2, stroke_color, stroke_width, stroke_opacity);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 
 		}
@@ -326,7 +266,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 				stroke_width = 0;
 			}
 
-			SVGElement* element = new my_path(string(child->name()), transform, path, fill_color, fill_opacity, stroke_color, stroke_width);
+			SVGElement* element = new my_path(string(child->name()), transform, path, fill, fill_opacity, stroke_color, stroke_width);
 			dynamic_cast<my_group*>(elements)->addElement(element);
 
 		}
@@ -339,7 +279,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 	}
 }
 
-vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string& widthS, string& heightS) {
+vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string& widthS, string& heightS, vector<LinearGradient>& gradients) {
 	vector<SVGElement*> elements;
 	ifstream file(filePath);
 	if (!file.is_open()) {
@@ -395,17 +335,66 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 
 
 	if (svgNode) {
+		if (string(svgNode->first_node()->name()) == "defs") {
+			rapidxml::xml_node<>* gradientNode = svgNode->first_node();
+			for (rapidxml::xml_node<>* node = gradientNode->first_node(); node; node = node->next_sibling())
+			{
+				if (string(node->name()) == "linearGradient") {
+					string id = node->first_attribute("id")->value();
+					double x1 = stod(node->first_attribute("x1")->value());
+					double y1 = stod(node->first_attribute("y1")->value());
+					double x2 = stod(node->first_attribute("x2")->value());
+					double y2 = stod(node->first_attribute("y2")->value());
+
+					vector<Stop> stops;
+					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
+						double offset = stod((stopNode->first_attribute("offset"))->value());
+						std::string color = stopNode->first_attribute("stop-color")->value();
+						Color stop_color = stoc(color);
+						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
+						Stop stop(offset, opacity, stop_color);
+						stops.push_back(stop);
+					}
+					LinearGradient gradient(id, x1, y1, x2, y2, stops);
+					gradients.push_back(gradient);
+				}
+			}
+		}
+		else if (string(svgNode->first_node()->name()) == "linearGradient") {
+			for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling())
+			{
+				if (string(node->name()) == "linearGradient") {
+					string id = node->first_attribute("id")->value();
+					double x1 = stod(node->first_attribute("x1")->value());
+					double y1 = stod(node->first_attribute("y1")->value());
+					double x2 = stod(node->first_attribute("x2")->value());
+					double y2 = stod(node->first_attribute("y2")->value());
+
+					vector<Stop> stops;
+					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
+						double offset = stod((stopNode->first_attribute("offset"))->value());
+						std::string color = stopNode->first_attribute("stop-color")->value();
+						Color stop_color = stoc(color);
+						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
+						Stop stop(offset, opacity, stop_color);
+						stops.push_back(stop);
+					}
+					LinearGradient gradient(id, x1, y1, x2, y2, stops);
+					gradients.push_back(gradient);
+				}
+			}
+		}
+
 		for (rapidxml::xml_node<>* node = svgNode->first_node(); node; node = node->next_sibling()) {
 			string fill = node->first_attribute("fill") ? node->first_attribute("fill")->value() : "rgb(0,0,0)";
 			string stroke = node->first_attribute("stroke") ? node->first_attribute("stroke")->value() : "rgb(255,255,255)";
-			Color fill_color = stoc(fill);
-			Color stroke_color = stoc(stroke);
 			string transform = node->first_attribute("transform") ? node->first_attribute("transform")->value() : "";
 			double stroke_width = node->first_attribute("stroke-width") ? stod(node->first_attribute("stroke-width")->value()) : 1.0;
 			double stroke_opacity = node->first_attribute("stroke-opacity") ? stod(node->first_attribute("stroke-opacity")->value()) : 1.0;
 			double fill_opacity = node->first_attribute("fill-opacity") ? stod(node->first_attribute("fill-opacity")->value()) : 1.0;
 			fill_opacity = node->first_attribute("opacity") ? stod(node->first_attribute("opacity")->value()) : fill_opacity;
 			double fontSize = node->first_attribute("font-size") ? stoi(node->first_attribute("font-size")->value()) : 10;
+			Color stroke_color = stoc(stroke);
 
 			if (fill == "none") {
 				fill_opacity = 0;
@@ -422,7 +411,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				double cy = node->first_attribute("cy") ? stod(node->first_attribute("cy")->value()) : 0;
 				double r = stod(node->first_attribute("r")->value());
 
-				SVGElement* element = new my_circle(string(node->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+				SVGElement* element = new my_circle(string(node->name()), transform, cx, cy, r, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 
 				elements.push_back(element);
 			}
@@ -433,7 +422,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				double width = node->first_attribute("width") ? stod(node->first_attribute("width")->value()) : 0;
 				double height = node->first_attribute("height") ? stod(node->first_attribute("height")->value()) : 0;
 
-				SVGElement* element = new my_rect(string(node->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+				SVGElement* element = new my_rect(string(node->name()), transform, x, y, width, height, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 
 				elements.push_back(element);
 			}
@@ -452,7 +441,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					stroke_width = 0;
 				}
 
-				SVGElement* element = new my_text(string(node->name()), transform, x, y - fontSize, fill_color, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
+				SVGElement* element = new my_text(string(node->name()), transform, x, y - fontSize, fill, stroke_color, stroke_width, fontSize, font_style, text_anchor, font_family, content);
 
 				elements.push_back(element);
 			}
@@ -462,7 +451,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				double num_points = 0;
 				double* pointsArr = stoArr(points, num_points);
 
-				SVGElement* element = new my_polyline(string(node->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+				SVGElement* element = new my_polyline(string(node->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 
 				elements.push_back(element);
 			}
@@ -473,7 +462,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				double rx = stoi(node->first_attribute("rx")->value());
 				double ry = stoi(node->first_attribute("ry")->value());
 
-				SVGElement* element = new my_ellipse(string(node->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+				SVGElement* element = new my_ellipse(string(node->name()), transform, cx, cy, rx, ry, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 
 				elements.push_back(element);
 			}
@@ -483,7 +472,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				double num_points = 0;
 				double* pointsArr = stoArr(points, num_points);
 
-				SVGElement* element = new my_polygon(string(node->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill_color, fill_opacity);
+				SVGElement* element = new my_polygon(string(node->name()), transform, pointsArr, num_points, stroke_color, stroke_width, stroke_opacity, fill, fill_opacity);
 
 				elements.push_back(element);
 			}
@@ -508,7 +497,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					stroke_width = 0;
 				}
 
-				SVGElement* element = new my_path(string(node->name()), transform, path, fill_color, fill_opacity, stroke_color, stroke_width);
+				SVGElement* element = new my_path(string(node->name()), transform, path, fill, fill_opacity, stroke_color, stroke_width);
 
 				elements.push_back(element);
 			}
@@ -525,13 +514,14 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 	}
 }
 
-VOID OnPaint(HDC hdc,Graphics& graphics)
+VOID OnPaint(HDC hdc, Graphics& graphics)
 {
 	vector<double> boxValues;
+	vector<LinearGradient> gradients;
 	string width, height;
-	svgFileName = "svg/svg-07.svg";
-	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height);
-
+	svgFileName = "kali.svg";
+	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height, gradients);
+	gradients.size();
 	if (!boxValues.empty()) {
 
 		RECT clientRect;
@@ -566,7 +556,7 @@ VOID OnPaint(HDC hdc,Graphics& graphics)
 		graphics.MultiplyTransform(new Matrix(1, 0, 0, 1, -boxValues[0], -boxValues[1]));
 	}
 
-	SVGRenderer renderer;
+	SVGRenderer renderer(gradients);
 	graphics.SetSmoothingMode(SmoothingModeAntiAlias);
 	renderer.render(graphics, element);
 }
@@ -616,7 +606,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR pCommandLine, INT iCmdSh
 
 	ShowWindow(hWnd, SW_MAXIMIZE);
 	UpdateWindow(hWnd);
-	
+
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);

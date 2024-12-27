@@ -12,7 +12,8 @@ class my_polyline : public SVGElement {
 private:
     double *points;
   int num_points;
-  Color stroke, fill;
+  Color stroke;
+  string fill;
   double stroke_width, stroke_opacity, fill_opacity;
   string transform;
 
@@ -20,17 +21,18 @@ public:
   my_polyline(string name, string transform, double *points = nullptr,
       double num_points = 0, Color stroke = Color(0, 0, 0),
               double stroke_width = 1, double stroke_opacity = 1,
-              Color fill = Color(0, 0, 0), double fill_opacity = 1)
+              string fill = "rgb(0, 0, 0)", double fill_opacity = 1)
       : points(points), num_points(num_points), stroke(stroke), fill(fill),
         stroke_width(stroke_width), stroke_opacity(stroke_opacity),
         fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
 
-  void render(Graphics &graphics) override {
+  void render(Graphics &graphics, vector<LinearGradient> gradients) override {
+	  Color filll = stoc(fill);
     Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(),
                        this->stroke.GetG(), this->stroke.GetB());
     Pen pen(stroke_color, this->stroke_width);
-    SolidBrush brush(Color(this->fill_opacity * 255, this->fill.GetR(),
-                           this->fill.GetG(), this->fill.GetB()));
+    SolidBrush brush(Color(this->fill_opacity * 255, filll.GetR(),
+        filll.GetG(), filll.GetB()));
     Point *point_array = new Point[this->num_points / 2];
     for (int i = 0; i < this->num_points; i += 2) {
       point_array[i / 2].X = this->points[i];

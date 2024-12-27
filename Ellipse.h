@@ -7,23 +7,25 @@ class my_ellipse : public SVGElement {
 private:
   double cx, cy, rx, ry;
   double stroke_width, stroke_opacity, fill_opacity;
-  Color stroke, fill;
+  Color stroke;
+  string fill;
   string transform;
 
 public:
   my_ellipse(string name, string transform, double cx = 0, double cy = 0, double rx = 1,
       double ry = 1, Color stroke = Color(0, 0, 0), double stroke_width = 1,
-             double stroke_opacity = 1, Color fill = Color(0, 0, 0),
+             double stroke_opacity = 1, string fill = "rgb(0, 0, 0)",
              double fill_opacity = 0)
       : cx(cx), cy(cy), rx(rx), ry(ry), stroke(stroke), fill(fill),
         stroke_width(stroke_width), stroke_opacity(stroke_opacity),
         fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
 
-  void render(Graphics &graphic) override {
+  void render(Graphics &graphic, vector<LinearGradient> gradients) override {
+	  Color filll = stoc(this->fill);
     Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(),
                        this->stroke.GetG(), this->stroke.GetB());
-    Color fill_color(255 * this->fill_opacity, this->fill.GetR(),
-                     this->fill.GetG(), this->fill.GetB());
+    Color fill_color(255 * this->fill_opacity, filll.GetR(),
+                     filll.GetG(), filll.GetB());
     Pen pen(stroke_color, this->stroke_width);
     SolidBrush brush(fill_color);
 

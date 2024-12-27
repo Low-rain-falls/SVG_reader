@@ -9,7 +9,7 @@ class my_text : public SVGElement {
 private:
 	double x, y;
 	Color stroke;
-	Color fill;
+	string fill;
 	double font_size;
 	string content;
 	double stroke_width;
@@ -19,14 +19,14 @@ private:
 	string transform;
 
 public:
-	my_text(string name, string transform, double x, double y, Color fill, Color stroke,
+	my_text(string name, string transform, double x, double y, string fill, Color stroke,
 		double stroke_width, int font_size, string font_style,
 		string text_anchor, string font_family, string content)
 		: x(x), y(y), stroke(stroke), font_size(font_size),
 		font_style(font_style), text_anchor(text_anchor),
 		font_family(font_family), content(content), fill(fill),
 		stroke_width(stroke_width), SVGElement(name), transform(transform) {}
-	void render(Graphics& graphics) override {
+	void render(Graphics& graphics, vector<LinearGradient> gradients) override {
 		//font - family = "Times New Roman,Times New Roman_MSFontService,sans-serif"
 		// handle multiple font families
 		string font_family_str = font_family;
@@ -48,8 +48,9 @@ public:
 		FontFamily fontFamily(font_families[0].c_str());
 		FontStyle style =
 			(font_style == "italic") ? FontStyleItalic : FontStyleRegular;
-		Font font(&fontFamily, static_cast<REAL>(font_size), style, UnitPixel);
-		SolidBrush brush(fill);
+		Font font(&fontFamily, static_cast<REAL>(font_size), style, UnitPixel);\
+			Color filll = stoc(this->fill);
+		SolidBrush brush(filll);
 		RectF boundingBox;
 		graphics.MeasureString(std::wstring(content.begin(), content.end()).c_str(),
 			-1, &font, PointF(0, 0), &boundingBox);
