@@ -19,6 +19,7 @@ public:
     double translateX = 0, translateY = 0;
     double rotateAngle = 0, rotateCenterX = 0, rotateCenterY = 0;
     double scaleX = 1, scaleY = 1;
+	GraphicsState save;
 
     void applyTransform(Graphics& g);
     void parseTransform(const string& content);
@@ -27,6 +28,7 @@ public:
 };
 
 void Transform::applyTransform(Graphics& g) {
+	save = g.Save();
     Matrix matrix;
     if (translateX != 0 || translateY != 0) {
         matrix.Translate(translateX, translateY);
@@ -88,13 +90,14 @@ void Transform::parseTransform(const string& content) {
 }
 
 void Transform::resetTransform(Graphics& g) {
-    g.ResetTransform();
+    g.Restore(save);
 	translateX = translateY = 0;
 	rotateAngle = rotateCenterX = rotateCenterY = 0;
 	scaleX = scaleY = 1;
 }
 
 void Transform::appleMultipleTransforms(Graphics& g) {
+    save = g.Save();
 	Matrix matrix;
 	matrix.Translate(translateX, translateY);
 	matrix.RotateAt(rotateAngle, PointF(rotateCenterX, rotateCenterY));
