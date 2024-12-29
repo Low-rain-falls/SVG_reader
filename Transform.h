@@ -83,6 +83,13 @@ void Transform::parseTransform(const string& content) {
             if (values.size() > 1) scaleY = values[1];
             else scaleY = scaleX;
         }
+		else if (type == "matrix") {
+			translateX = values[4];
+			translateY = values[5];
+			scaleX = values[0];
+			scaleY = values[3];
+			rotateAngle = atan2(values[1], values[0]) * 180 / 3.14159265358979323846;
+		}
         else {
             /*throw std::runtime_error("Unsupported transform type: " + type);*/
         }

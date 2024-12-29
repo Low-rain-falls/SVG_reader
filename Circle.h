@@ -16,6 +16,21 @@ public:
 
 	void render(Graphics& graphic, vector<LinearGradient> gradients) override
 	{
+		if (fill[0] == 'u' && fill[1] == 'r' && fill[2] == 'l') {
+			Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
+			Pen pen(strokeColor, this->stroke_width);
+			string id = extractID(fill);
+			LinearGradientBrush* brush = nullptr;
+			for (auto gradient : gradients) {
+				if (gradient.getId() == id) {
+					brush = gradient.createBrush();
+					break;
+				}
+			}
+			graphic.FillEllipse(brush, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
+			graphic.DrawEllipse(&pen, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
+			return;
+		}
 		Color filll = stoc(this->fill);
 		Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
 		Color fillColor(255 * this->fill_opacity, filll.GetR(), filll.GetG(), filll.GetB());
@@ -23,7 +38,6 @@ public:
 		SolidBrush brush(fillColor);
 		graphic.FillEllipse(&brush, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
 		graphic.DrawEllipse(&pen, static_cast<REAL>(this->cx - this->r), static_cast<REAL>(this->cy - this->r), static_cast<REAL>(this->r * 2), static_cast<REAL>(this->r * 2));
-
 	}
 
 	~my_circle() override {

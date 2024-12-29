@@ -16,16 +16,25 @@ public:
 
 	void render(Graphics& graphics, vector<LinearGradient> gradients) override
 	{
-		if (width == 960)
-		{
-			width = 960;
+		if (fill[0] == 'u' && fill[1] == 'r' && fill[2] == 'l') {
+			Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
+			Pen pen(strokeColor, this->stroke_width);
+			string id = extractID(fill);
+			LinearGradientBrush* brush = nullptr;
+			for (auto gradient : gradients) {
+				if (gradient.getId() == id) {
+					brush = gradient.createBrush();
+					break;
+				}
+			}
+			graphics.FillRectangle(brush, static_cast<REAL>(this->x), static_cast<REAL>(this->y), static_cast<REAL>(this->width), static_cast<REAL>(this->height));
+			graphics.DrawRectangle(&pen, static_cast<REAL>(this->x), static_cast<REAL>(this->y), static_cast<REAL>(this->width), static_cast<REAL>(this->height));
+			return;
 		}
 		Color stroke_color(255 * this->stroke_opacity, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB());
 		Pen pen(stroke_color, this->stroke_width);
 		Color filll = stoc(fill);
 		SolidBrush brush(Color(this->fill_opacity* 255, filll.GetR(), filll.GetG(), filll.GetB()));
-		//graphics.FillRectangle(&brush, this->x, this->y, this->width, this->height);
-		//graphics.DrawRectangle(&pen, this->x, this->y, this->width, this->height);
 		graphics.FillRectangle(&brush, static_cast<REAL>(this->x), static_cast<REAL>(this->y), static_cast<REAL>(this->width), static_cast<REAL>(this->height));
 		graphics.DrawRectangle(&pen, static_cast<REAL>(this->x), static_cast<REAL>(this->y), static_cast<REAL>(this->width), static_cast<REAL>(this->height));
 	}

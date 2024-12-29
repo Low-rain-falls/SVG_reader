@@ -67,6 +67,94 @@ double* stoArr(string points, double& num_points)
 	return arrr;
 }
 
+bool checkCommandOnePoint(char command, vector<PointF>& points, double x)
+{
+	if (command == 'V' || command == 'v')
+	{
+		points.push_back(PointF(0, x));
+		return true;
+	}
+	if (command == 'h' || command == 'H')
+	{
+		points.push_back(PointF(x, 0));
+		return true;
+	}
+	return false;
+}
+
+void skipSpace(string& d, int& i)
+{
+	while (d[i] == ' ' || d[i] == ',' || d[i] == '\n' || d[i] == '\t')
+	{
+		i++;
+	}
+}
+
+bool checkHaveDot(string number)
+{
+	for (int i = 0; i < number.length(); i++)
+	{
+		if (number[i] == '.')
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+double getNumber(string& d, int& i)
+{
+	string num = "";
+	while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
+	{
+		if (d[i] == '.' && checkHaveDot(num))
+		{
+			break;
+		}
+		num += d[i];
+		i++;
+		if (d[i] == '-')
+		{
+			break;
+		}
+	}
+	if (num != "")
+	{
+		return stod(num);
+	}
+	return 0;
+}
+
+void getNumberCommandA(string& d, int& i, vector<tuple<char, vector<PointF>>>& result, char command, int length)
+{
+	vector<PointF> points;
+	int count = 0;
+	while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S' || d[i] == 'A' || d[i] == 'a') && i < length)
+	{
+		skipSpace(d, i);
+		double x = getNumber(d, i);
+		skipSpace(d, i);
+		if (!(count % 5 == 0 || count % 5 == 4))
+		{
+			points.push_back(PointF(x, 0));
+			count++;
+			continue;
+		}
+		double y = getNumber(d, i);
+		points.push_back(PointF(x, y));
+		skipSpace(d, i);
+		count++;
+		/*int temp = 25;
+		if (x == temp || y == temp)
+		{
+			x = y = temp;
+		}*/
+	}
+	tuple<char, vector<PointF>> temp = make_tuple(command, points);
+	result.push_back(temp);
+	i--;
+}
+
 vector<tuple<char, vector<PointF>>> parsePath(string d)
 {
 	int length = d.length();
@@ -83,68 +171,27 @@ vector<tuple<char, vector<PointF>>> parsePath(string d)
 				continue;
 			}
 			i++;
-
+			if (command == 'a' || command == 'A')
+			{
+				getNumberCommandA(d, i, result, command, length);
+				continue;
+			}
 			while (!(d[i] == 'm' || d[i] == 'M' || d[i] == 'L' || d[i] == 'l' || d[i] == 'V' || d[i] == 'v' || d[i] == 'h' || d[i] == 'H' || d[i] == 'c' || d[i] == 'C' || d[i] == 'z' || d[i] == 'Z' || d[i] == 's' || d[i] == 'S' || d[i] == 'A' || d[i] == 'a') && i < length)
 			{
-				string num = "";
-				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
+				double x = getNumber(d, i);
+				if (checkCommandOnePoint(command, points, x))
 				{
-					if (d[i] == '.' && num == "")
-					{
-						num += '0';
-					}
-					num += d[i];
-					i++;
-					if (d[i] == '.' && num == "-")
-					{
-						num += '0';
-						continue;
-					}
-					if (d[i] == '-')
-					{
-						break;
-					}
-				}
-				double x = stod(num);
-				if (command == 'V' || command == 'v')
-				{
-					points.push_back(PointF(0, x));
 					break;
 				}
-				if (command == 'h' || command == 'H')
-				{
-					points.push_back(PointF(x, 0));
-					break;
-				}
-				num = "";
-				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n' || d[i] == '\t')
-				{
-					i++;
-				}
-				while ((d[i] >= '0' && d[i] <= '9') || d[i] == '-' || d[i] == '.')
-				{
-					if (d[i] == '.' && num == "")
-					{
-						num += '0';
-					}
-					num += d[i];
-					i++;
-					if (d[i] == '.' && num == "-")
-					{
-						num += '0';
-						continue;
-					}
-					if ((d[i] == '-' || d[i] == '.') && num.find('.') != -1)
-					{
-						break;
-					}
-				}
-				double y = stod(num);
+				skipSpace(d, i);
+				double y = getNumber(d, i);
 				points.push_back(PointF(x, y));
-				while (d[i] == ' ' || d[i] == ',' || d[i] == '\n' || d[i] == '\t')
+				skipSpace(d, i);
+				/*int temp = 25;
+				if (x == temp || y == temp)
 				{
-					i++;
-				}
+					x = y = temp;
+				}*/
 			}
 			tuple<char, vector<PointF>> temp = make_tuple(command, points);
 			result.push_back(temp);
@@ -165,7 +212,50 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 		double fill_opacity = child->first_attribute("fill-opacity") ? stod(child->first_attribute("fill-opacity")->value()) : group_fill_opacity;
 		fill_opacity = child->first_attribute("opacity") ? stod(child->first_attribute("opacity")->value()) : fill_opacity;
 		double fontSize = child->first_attribute("font-size") ? stoi(child->first_attribute("font-size")->value()) : group_fontSize;
-		Color stroke_color = stoc(stroke);
+
+		string style = child->first_attribute("style") ? child->first_attribute("style")->value() : "";
+		if (style != "") {
+			int number = style.length();
+			while (number > 0)
+			{
+				int pos = style.find(":");
+				string name = style.substr(0, pos);
+				style.erase(0, pos + 1);
+				pos = style.find(';');
+				if (pos == -1)
+				{
+					pos = style.length();
+				}
+				string value = style.substr(0, pos);
+				style.erase(0, pos + 1);
+				number = style.length();
+				if (name == "fill")
+				{
+					fill = value;
+				}
+				else if (name == "stroke")
+				{
+					stroke = value;
+				}
+				else if (name == "stroke-width")
+				{
+					stroke_width = stod(value);
+				}
+				else if (name == "stroke-opacity")
+				{
+					stroke_opacity = stod(value);
+				}
+				else if (name == "fill-opacity")
+				{
+					fill_opacity = stod(value);
+				}
+				else if (name == "opacity")
+				{
+					fill_opacity = stod(value);
+				}
+			}
+		}
+
 		if (fill == "none")
 		{
 			fill_opacity = 0;
@@ -176,6 +266,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 			stroke_opacity = 0;
 			stroke_width = 0;
 		}
+		Color stroke_color = stoc(stroke);
 
 		// Process <circle> elements
 		if (string(child->name()) == "circle") {
@@ -349,7 +440,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					vector<Stop> stops;
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
 						double offset = stod((stopNode->first_attribute("offset"))->value());
-						std::string color = stopNode->first_attribute("stop-color")->value();
+						std::string color = stopNode->first_attribute("stop-color") ? stopNode->first_attribute("stop-color")->value() : "";
 						Color stop_color = stoc(color);
 						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
 						Stop stop(offset, opacity, stop_color);
@@ -374,8 +465,34 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
 						double offset = stod((stopNode->first_attribute("offset"))->value());
 						std::string color = stopNode->first_attribute("stop-color")->value();
-						Color stop_color = stoc(color);
+						string style = node->first_attribute("style") ? node->first_attribute("style")->value() : "";
 						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
+						if (style != "") {
+							int number = style.length();
+							while (number > 0)
+							{
+								int pos = style.find(":");
+								string name = style.substr(0, pos);
+								style.erase(0, pos + 1);
+								pos = style.find(';');
+								if (pos == -1)
+								{
+									pos = style.length();
+								}
+								string value = style.substr(0, pos);
+								style.erase(0, pos + 1);
+								number = style.length();
+								if (name == "stop-color")
+								{
+									color = value;
+								}
+								if (name == "stop-opacity")
+								{
+									opacity = stod(value);
+								}
+							}
+						}
+						Color stop_color = stoc(color);
 						Stop stop(offset, opacity, stop_color);
 						stops.push_back(stop);
 					}
@@ -394,7 +511,49 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 			double fill_opacity = node->first_attribute("fill-opacity") ? stod(node->first_attribute("fill-opacity")->value()) : 1.0;
 			fill_opacity = node->first_attribute("opacity") ? stod(node->first_attribute("opacity")->value()) : fill_opacity;
 			double fontSize = node->first_attribute("font-size") ? stoi(node->first_attribute("font-size")->value()) : 10;
-			Color stroke_color = stoc(stroke);
+
+			string style = node->first_attribute("style") ? node->first_attribute("style")->value() : "";
+			if (style != "") {
+				int number = style.length();
+				while (number > 0)
+				{
+					int pos = style.find(":");
+					string name = style.substr(0, pos);
+					style.erase(0, pos + 1);
+					pos = style.find(';');
+					if (pos == -1)
+					{
+						pos = style.length();
+					}
+					string value = style.substr(0, pos);
+					style.erase(0, pos + 1);
+					number = style.length();
+					if (name == "fill")
+					{
+						fill = value;
+					}
+					else if (name == "stroke")
+					{
+						stroke = value;
+					}
+					else if (name == "stroke-width")
+					{
+						stroke_width = stod(value);
+					}
+					else if (name == "stroke-opacity")
+					{
+						stroke_opacity = stod(value);
+					}
+					else if (name == "fill-opacity")
+					{
+						fill_opacity = stod(value);
+					}
+					else if (name == "opacity")
+					{
+						fill_opacity = stod(value);
+					}
+				}
+			}
 
 			if (fill == "none") {
 				fill_opacity = 0;
@@ -405,6 +564,7 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 				stroke_width = 0;
 			}
 
+			Color stroke_color = stoc(stroke);
 			// Process <circle> elements
 			if (string(node->name()) == "circle") {
 				double cx = node->first_attribute("cx") ? stod(node->first_attribute("cx")->value()) : 0;
@@ -519,9 +679,8 @@ VOID OnPaint(HDC hdc, Graphics& graphics)
 	vector<double> boxValues;
 	vector<LinearGradient> gradients;
 	string width, height;
-	svgFileName = "kali.svg";
+	svgFileName = "Samples/15.svg";
 	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height, gradients);
-	gradients.size();
 	if (!boxValues.empty()) {
 
 		RECT clientRect;

@@ -29,13 +29,32 @@ public:
 		fill_opacity(fill_opacity), SVGElement(name), transform(transform) {}
 
 	void render(Graphics& graphics, vector<LinearGradient> gradients) override {
+		if (fill[0] == 'u' && fill[1] == 'r' && fill[2] == 'l') {
+			Color strokeColor(255 * this->stroke_opacity, this->stroke.GetR(),
+				this->stroke.GetG(), this->stroke.GetB());
+			Pen pen(strokeColor, this->stroke_width);
+			string id = extractID(fill);
+			LinearGradientBrush* brush = nullptr;
+			for (auto gradient : gradients) {
+				if (gradient.getId() == id) {
+					brush = gradient.createBrush();
+					break;
+				}
+			}
+			Point* point_array = new Point[this->num_points / 2];
+			for (int i = 0; i < this->num_points; i += 2) {
+				point_array[i / 2].X = this->points[i];
+				point_array[i / 2].Y = this->points[i + 1];
+			}
+			graphics.FillPolygon(brush, point_array, num_points / 2);
+			graphics.DrawPolygon(&pen, point_array, num_points / 2);
+			delete[] point_array;
+			return;
+		}
 		GraphicsPath path;
-		Pen pen(Color(this->stroke_opacity * 255, this->stroke.GetR(),
-			this->stroke.GetG(), this->stroke.GetB()),
-			this->stroke_width);
+		Pen pen(Color(this->stroke_opacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()), this->stroke_width);
 		Color filll = stoc(fill);
-		SolidBrush brush(Color(this->fill_opacity * 255, filll.GetR(),
-			filll.GetG(), filll.GetB()));
+		SolidBrush brush(Color(this->fill_opacity * 255, filll.GetR(), filll.GetG(), filll.GetB()));
 		Point* point_array = new Point[this->num_points / 2];
 		for (int i = 0; i < this->num_points; i += 2) {
 			point_array[i / 2].X = this->points[i];
@@ -45,6 +64,7 @@ public:
 		path.SetFillMode(FillModeWinding);
 		graphics.FillPath(&brush, &path);
 		graphics.DrawPath(&pen, &path);
+		delete[] point_array;
 	}
 
 	~my_polygon() override { delete[] this->points; }

@@ -13,13 +13,13 @@ using namespace Gdiplus;
 
 class SVGElement {
 private:
-  string name;
+	string name;
 
 public:
-  SVGElement(const string &name) : name(name) {}
-  virtual void render(Graphics &graphic, vector<LinearGradient> gradients) = 0;
-  virtual ~SVGElement() = default;
-  virtual string getTransform() = 0;
+	SVGElement(const string& name) : name(name) {}
+	virtual void render(Graphics& graphic, vector<LinearGradient> gradients) = 0;
+	virtual ~SVGElement() = default;
+	virtual string getTransform() = 0;
 };
 
 std::unordered_map<std::string, Gdiplus::Color> colorMap = {
@@ -41,7 +41,9 @@ std::unordered_map<std::string, Gdiplus::Color> colorMap = {
 		{"skyblue", Gdiplus::Color(255, 135, 206, 235)},
 		{"darkmagenta", Gdiplus::Color(255, 139, 0, 139)},
 		{"deepskyblue", Gdiplus::Color(255, 0, 191, 255)},
-		{"purple", Gdiplus::Color(255, 160, 32, 240)}
+		{"purple", Gdiplus::Color(255, 160, 32, 240)},
+		{"lightcoral", Gdiplus::Color(240, 128, 128)},
+{"saddlebrown",  Gdiplus::Color(139,45,13)}
 };
 
 Color hexatoRGB(string hex)
