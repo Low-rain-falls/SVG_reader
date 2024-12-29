@@ -1,17 +1,17 @@
 ﻿#ifndef SVGRENDERER_H
 #define SVGRENDERER_H
 
+#include "LinearGradient.h"
 #include "SVGElement.h"
 #include "Transform.h"
-#include "LinearGradient.h"
-
 
 class SVGRenderer {
 private:
   Transform transform;
   vector<LinearGradient> linearGradients;
+
 public:
-	SVGRenderer(vector<LinearGradient> v) : linearGradients(v) {}
+  SVGRenderer(vector<LinearGradient> v) : linearGradients(v) {}
   void render(Graphics &graphic, vector<SVGElement *>);
   void renderTransform(Graphics &graphic, string transform);
 };
@@ -31,9 +31,9 @@ void SVGRenderer::render(Graphics &graphic, vector<SVGElement *> element) {
   }
 }
 
-//void SVGRenderer::renderTransform(Graphics &graphic, string transform) {
-//  this->transform.parseTransform(transform);
-//  this->transform.applyTransform(graphic);
-//}
+// void SVGRenderer::renderTransform(Graphics &graphic, string transform) {
+//   this->transform.parseTransform(transform);
+//   this->transform.applyTransform(graphic);
+// }
 
 #endif

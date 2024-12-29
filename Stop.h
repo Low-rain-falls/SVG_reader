@@ -7,11 +7,12 @@ using namespace Gdiplus;
 
 class Stop {
 public:
-	double offset;
-	double opacity;
-	Color color;
+  double offset;
+  double opacity;
+  Color color;
 
-	Stop(double offset, double opacity, Color color) : offset(offset), opacity(opacity), color(color) {}
+  Stop(double offset, double opacity, Color color)
+      : offset(offset), opacity(opacity), color(color) {}
 };
 
 #endif
