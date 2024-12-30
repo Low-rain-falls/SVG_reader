@@ -679,7 +679,7 @@ VOID OnPaint(HDC hdc, Graphics& graphics)
 	vector<double> boxValues;
 	vector<LinearGradient> gradients;
 	string width, height;
-	svgFileName = "Samples/15.svg";
+	svgFileName = "Samples/6.svg";
 	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height, gradients);
 	if (!boxValues.empty()) {
 
