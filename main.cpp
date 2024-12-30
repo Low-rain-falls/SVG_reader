@@ -25,7 +25,6 @@
 #include "Path.h"
 #include "Group.h"
 #include "LinearGradient.h"
-#include "RadialGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -66,6 +65,16 @@ double* stoArr(string points, double& num_points)
 	}
 
 	return arrr;
+}
+
+double convertPercentToAbsolute(string value, double size) {
+	if (value.find('%') != string::npos) {
+		double percentage = stod(value.substr(0, value.find('%')));
+		return (percentage * size) / 100.0;
+	}
+	else {
+		return stod(value);
+	}
 }
 
 vector<tuple<char, vector<PointF>>> parsePath(string d)
@@ -280,7 +289,7 @@ void handleGroup(SVGElement* elements, xml_node<>* node, string group_stroke, do
 	}
 }
 
-vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string& widthS, string& heightS, vector<LinearGradient>& gradients, vector<RadialGradient>& radials) {
+vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string& widthS, string& heightS, vector<LinearGradient>& gradients) {
 	vector<SVGElement*> elements;
 	ifstream file(filePath);
 	if (!file.is_open()) {
@@ -342,10 +351,25 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 			{
 				if (string(node->name()) == "linearGradient") {
 					string id = node->first_attribute("id")->value();
-					double x1 = stod(node->first_attribute("x1")->value());
-					double y1 = stod(node->first_attribute("y1")->value());
-					double x2 = stod(node->first_attribute("x2")->value());
-					double y2 = stod(node->first_attribute("y2")->value());
+					string gradientUnits = (node->first_attribute("gradientUnits")) ? node->first_attribute("gradientUnits")->value() : "objectBoundingBox";
+					string x1str = node->first_attribute("x1")->value();
+					string y1str = node->first_attribute("y1")->value();
+					string x2str = node->first_attribute("x2")->value();
+					string y2str = node->first_attribute("y2")->value();
+					double x1, x2, y1, y2;
+					if (gradientUnits == "objectBoundingBox") {
+						x1 = convertPercentToAbsolute(x1str, stod(widthS));
+						x2 = convertPercentToAbsolute(x2str, stod(widthS));
+						y1 = convertPercentToAbsolute(y1str, stod(heightS));
+						y2 = convertPercentToAbsolute(y2str, stod(heightS));
+					}
+					else {
+						x1 = stod(x1str);
+						x2 = stod(x2str);
+						y1 = stod(y1str);
+						y2 = stod(y2str);
+					}
+					
 
 					vector<Stop> stops;
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
@@ -356,28 +380,8 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 						Stop stop(offset, opacity, stop_color);
 						stops.push_back(stop);
 					}
-					LinearGradient gradient(id, x1, y1, x2, y2, stops);
+					LinearGradient gradient(id, x1, y1, x2, y2,gradientUnits, stops);
 					gradients.push_back(gradient);
-				}
-				else {
-					string id = node->first_attribute("id")->value();
-					double cx = stod(node->first_attribute("cx")->value());
-					double cy = stod(node->first_attribute("cy")->value());
-					double fx = stod(node->first_attribute("fx")->value());
-					double fy = stod(node->first_attribute("fy")->value());
-					double r = stod(node->first_attribute("r")->value());
-
-					vector<Stop> stops;
-					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
-						double offset = stod((stopNode->first_attribute("offset"))->value());
-						std::string color = stopNode->first_attribute("stop-color")->value();
-						Color stop_color = stoc(color);
-						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
-						Stop stop(offset, opacity, stop_color);
-						stops.push_back(stop);
-					}
-					RadialGradient radial(id, cx, cy, r, fx, fy, stops);
-					radials.push_back(radial);
 				}
 			}
 		}
@@ -386,10 +390,24 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 			{
 				if (string(node->name()) == "linearGradient") {
 					string id = node->first_attribute("id")->value();
-					double x1 = stod(node->first_attribute("x1")->value());
-					double y1 = stod(node->first_attribute("y1")->value());
-					double x2 = stod(node->first_attribute("x2")->value());
-					double y2 = stod(node->first_attribute("y2")->value());
+					string gradientUnits = (node->first_attribute("gradientUnits")) ? node->first_attribute("gradientUnits")->value() : "objectBoundingBox";
+					string x1str = node->first_attribute("x1")->value();
+					string y1str = node->first_attribute("y1")->value();
+					string x2str = node->first_attribute("x2")->value();
+					string y2str = node->first_attribute("y2")->value();
+					double x1, x2, y1, y2;
+					if (gradientUnits == "objectBoundingBox") {
+						x1 = convertPercentToAbsolute(x1str, stod(widthS));
+						x2 = convertPercentToAbsolute(x2str, stod(widthS));
+						y1 = convertPercentToAbsolute(y1str, stod(heightS));
+						y2 = convertPercentToAbsolute(y2str, stod(heightS));
+					}
+					else {
+						x1 = stod(x1str);
+						x2 = stod(x2str);
+						y1 = stod(y1str);
+						y2 = stod(y2str);
+					}
 
 					vector<Stop> stops;
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
@@ -400,28 +418,8 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 						Stop stop(offset, opacity, stop_color);
 						stops.push_back(stop);
 					}
-					LinearGradient gradient(id, x1, y1, x2, y2, stops);
+					LinearGradient gradient(id, x1, y1, x2, y2, gradientUnits, stops);
 					gradients.push_back(gradient);
-				}
-				else {
-					string id = node->first_attribute("id")->value();
-					double cx = stod(node->first_attribute("cx")->value());
-					double cy = stod(node->first_attribute("cy")->value());
-					double fx = stod(node->first_attribute("fx")->value());
-					double fy = stod(node->first_attribute("fy")->value());
-					double r = stod(node->first_attribute("r")->value());
-
-					vector<Stop> stops;
-					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
-						double offset = stod((stopNode->first_attribute("offset"))->value());
-						std::string color = stopNode->first_attribute("stop-color")->value();
-						Color stop_color = stoc(color);
-						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
-						Stop stop(offset, opacity, stop_color);
-						stops.push_back(stop);
-					}
-					RadialGradient radial(id, cx, cy, r, fx, fy, stops);
-					radials.push_back(radial);
 				}
 			}
 		}
@@ -559,10 +557,9 @@ VOID OnPaint(HDC hdc, Graphics& graphics)
 {
 	vector<double> boxValues;
 	vector<LinearGradient> gradients;
-	vector<RadialGradient> radials;
 	string width, height;
-	svgFileName = "svg-18.svg";
-	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height, gradients, radials);
+	svgFileName = "svg/svg-14.svg";
+	vector<SVGElement*> element = parseSVG(svgFileName, boxValues, width, height, gradients);
 	gradients.size();
 	if (!boxValues.empty()) {
 
