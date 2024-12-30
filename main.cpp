@@ -305,6 +305,8 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 
 	rapidxml::xml_node<>* svgNode = doc.first_node("svg");
 
+
+	double width, height;
 	widthS = svgNode->first_attribute("width") ? svgNode->first_attribute("width")->value() : "";
 	if (widthS != "") {
 		string temp;
@@ -343,6 +345,17 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 		}
 	}
 
+	if (!widthS.empty() && !heightS.empty()) {
+		width = stod(widthS);
+		height = stod(heightS);
+	}
+	else if (!boxValues.empty()) {
+		width = boxValues[2];
+		height = boxValues[3];
+	}
+	else {
+		width = height = 1.0;
+	}
 
 	if (svgNode) {
 		if (string(svgNode->first_node()->name()) == "defs") {
@@ -358,22 +371,23 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					string y2str = node->first_attribute("y2")->value();
 					double x1, x2, y1, y2;
 					if (gradientUnits == "objectBoundingBox") {
-						x1 = convertPercentToAbsolute(x1str, stod(widthS));
-						x2 = convertPercentToAbsolute(x2str, stod(widthS));
-						y1 = convertPercentToAbsolute(y1str, stod(heightS));
-						y2 = convertPercentToAbsolute(y2str, stod(heightS));
+						x1 = convertPercentToAbsolute(x1str, width);
+						x2 = convertPercentToAbsolute(x2str, width);
+						y1 = convertPercentToAbsolute(y1str, height);
+						y2 = convertPercentToAbsolute(y2str, height);
 					}
 					else {
-						x1 = stod(x1str);
-						x2 = stod(x2str);
-						y1 = stod(y1str);
-						y2 = stod(y2str);
+						x1 = convertPercentToAbsolute(x1str, 1.0);
+						x2 = convertPercentToAbsolute(x2str, 1.0);
+						y1 = convertPercentToAbsolute(y1str, 1.0);
+						y2 = convertPercentToAbsolute(y2str, 1.0);
 					}
 					
 
 					vector<Stop> stops;
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
-						double offset = stod((stopNode->first_attribute("offset"))->value());
+						string offsetStr = (stopNode->first_attribute("offset"))->value();
+						double offset = convertPercentToAbsolute(offsetStr, 1.0);
 						std::string color = stopNode->first_attribute("stop-color")->value();
 						Color stop_color = stoc(color);
 						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
@@ -397,21 +411,22 @@ vector<SVGElement*> parseSVG(string filePath, vector<double>& boxValues, string&
 					string y2str = node->first_attribute("y2")->value();
 					double x1, x2, y1, y2;
 					if (gradientUnits == "objectBoundingBox") {
-						x1 = convertPercentToAbsolute(x1str, stod(widthS));
-						x2 = convertPercentToAbsolute(x2str, stod(widthS));
-						y1 = convertPercentToAbsolute(y1str, stod(heightS));
-						y2 = convertPercentToAbsolute(y2str, stod(heightS));
+						x1 = convertPercentToAbsolute(x1str, width);
+						x2 = convertPercentToAbsolute(x2str, width);
+						y1 = convertPercentToAbsolute(y1str, height);
+						y2 = convertPercentToAbsolute(y2str, height);
 					}
 					else {
-						x1 = stod(x1str);
-						x2 = stod(x2str);
-						y1 = stod(y1str);
-						y2 = stod(y2str);
+						x1 = convertPercentToAbsolute(x1str, 1.0);
+						x2 = convertPercentToAbsolute(x2str, 1.0);
+						y1 = convertPercentToAbsolute(y1str, 1.0);
+						y2 = convertPercentToAbsolute(y2str, 1.0);
 					}
 
 					vector<Stop> stops;
 					for (auto* stopNode = node->first_node("stop"); stopNode; stopNode = stopNode->next_sibling("stop")) {
-						double offset = stod((stopNode->first_attribute("offset"))->value());
+						string offsetStr = (stopNode->first_attribute("offset"))->value();
+						double offset = convertPercentToAbsolute(offsetStr, 1.0);
 						std::string color = stopNode->first_attribute("stop-color")->value();
 						Color stop_color = stoc(color);
 						double opacity = stopNode->first_attribute("stop-opacity") ? std::stod(stopNode->first_attribute("stop-opacity")->value()) : 1.0;
